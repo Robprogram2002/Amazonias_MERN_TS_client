@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { createContext, FC, useReducer } from 'react';
+import { createContext, FC, useEffect, useReducer } from 'react';
+import { useMutation } from 'react-query';
+import { LoadingOutlined } from '@ant-design/icons';
 import { IUser } from '../types/user/User';
+import { meRequest } from '../api/authentication/index';
+import Center from '../components/Layout/Containers/Center';
 
 interface IAuthContext {
   user: IUser | null;
@@ -80,10 +84,30 @@ const AuthProvider: FC = ({ children }) => {
     },
   };
 
+  const { isLoading, mutate } = useMutation(meRequest, {
+    onSuccess: ({ status, data }) => {
+      if (status === 200) {
+        authFunctionsState.me(data.user);
+      }
+    },
+    onError: () => {},
+  });
+
+  useEffect(() => {
+    mutate();
+  }, []);
+
   return (
     <authContext.Provider value={authState}>
       <authFunctContext.Provider value={authFunctionsState}>
-        {children}
+        {isLoading ? (
+          <Center>
+            {' '}
+            <LoadingOutlined size={40} />{' '}
+          </Center>
+        ) : (
+          children
+        )}
       </authFunctContext.Provider>
     </authContext.Provider>
   );

@@ -1,0 +1,102 @@
+@import '../../../styles//constants.scss';
+
+.FormContainer {
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: -1px -2px 1px 0.8px #cecdcd, 1px 2px 1px 0.8px #cecdcd;
+  width: 75%;
+  height: 85%;
+}
+
+.FormTitle {
+  font-family: $cursive;
+  font-size: 2.6rem;
+  letter-spacing: 2px;
+  color: $mainOrange;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 0.6rem;
+  padding: 0rem;
+}
+
+.Column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+}
+
+.Field {
+  outline: none;
+  border: none;
+  height: 100%;
+  margin: 0;
+  color: #333333;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  padding-left: 0.5rem;
+}
+
+.Field::placeholder {
+  font-weight: normal;
+}
+
+.ErrorMessege {
+  color: rgb(218, 7, 7);
+  font-size: 1rem;
+  font-style: italic;
+  font-family: 'Lobster', sans-serif;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.Form {
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.Paragraph {
+  color: #b9b7b7;
+  text-align: center;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  font-weight: bold;
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.Paragraph:hover {
+  color: royalblue;
+}
+
+.FillButton {
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $darkBlue;
+  background-color: $mainOrange;
+  border-radius: 12px;
+  padding: 0.6rem;
+  height: 40px;
+  width: 200px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-family: $cursive;
+  margin: 1rem;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    text-transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
