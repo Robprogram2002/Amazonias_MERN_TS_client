@@ -11,7 +11,7 @@ interface LoginCardProps {
 }
 
 const LoginCard = ({ isLogin, setIsLogin }: LoginCardProps) => {
-  const onClicHandler = () => {
+  const onClickHandler = () => {
     if (isLogin) {
       setIsLogin(false);
     } else {
@@ -31,17 +31,31 @@ const LoginCard = ({ isLogin, setIsLogin }: LoginCardProps) => {
       <div className={styles.ImageContainer}>
         <Center>{isLogin ? <LoginIcon /> : <RegisterIcon />}</Center>
       </div>
-
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-      <span
-        className={styles.Paragraph}
-        onClick={onClicHandler}
-        onKeyDown={onClicHandler}
-      >
-        {isLogin
-          ? 'Are you still not have an account ? Register now !'
-          : 'Are you already have an account ? Login now !'}
-      </span>
+      {isLogin ? (
+        <p className={styles.Paragraph}>
+          Are you still not have an account ?
+          <span
+            onClick={onClickHandler}
+            onKeyDown={onClickHandler}
+            role="link"
+            tabIndex={0}
+          >
+            Register now !
+          </span>
+        </p>
+      ) : (
+        <p className={styles.Paragraph}>
+          Are you already have an account ?
+          <span
+            onClick={onClickHandler}
+            onKeyDown={onClickHandler}
+            role="link"
+            tabIndex={0}
+          >
+            Login now !
+          </span>
+        </p>
+      )}
     </div>
   );
 };

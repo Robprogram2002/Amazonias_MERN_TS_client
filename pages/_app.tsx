@@ -27,7 +27,7 @@ axios.defaults.withCredentials = true;
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer role="alert" />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <AuthProvider>
