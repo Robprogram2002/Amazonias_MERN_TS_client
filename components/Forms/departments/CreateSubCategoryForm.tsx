@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import { useMutation, useQuery } from 'react-query';
 import { fetchCategories } from 'api/products/categories';
 import onErrorHandler from 'api/authentication/onErrorHandler';
+import { addSubCategory } from 'api/products/subCategories';
+import { toast } from 'react-toastify';
 import styles from './CreateDepartmentForm.module.scss';
 import InputField from '../Fields/InputField';
 import SelectField from '../Fields/SelectField';
@@ -24,8 +26,17 @@ const initialValues = {
 };
 
 const CreateCategoryForm = () => {
-  const mutate = useMutation('addCategory');
-  const { data, isLoading } = useQuery('fetch-departments', fetchCategories, {
+  const { isLoading, mutate } = useMutation('addCategory', addSubCategory, {
+    onSuccess: ({ data, status }) => {
+      if (status === 200) {
+        toast.success(`Sub-category ${data.name} was created succesfully`);
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
+    },
+  });
+  const categories = useQuery('fetch-departments', fetchCategories, {
     onError: (err) => {
       onErrorHandler(err);
     },
@@ -47,9 +58,12 @@ const CreateCategoryForm = () => {
           validateOnChange
           validationSchema={schema}
           onSubmit={async (values, actions) => {
-            // loginRequest(values);
-            console.log(values);
-            actions.resetForm({ values });
+            mutate({
+              ...values,
+              slug: null,
+            });
+
+            actions.resetForm();
           }}
         >
           {({ handleSubmit, isValid, errors, touched, values }) => (
@@ -71,9 +85,9 @@ const CreateCategoryForm = () => {
                   name="departmentId"
                   error={!!(errors.categoryId && touched.categoryId)}
                   label="Category"
-                  loading={isLoading}
+                  loading={categories.isLoading}
                   options={
-                    data?.data.map((element: any) => ({
+                    categories.data?.data.map((element: any) => ({
                       id: element._id,
                       name: element.name,
                     })) || null
@@ -84,7 +98,7 @@ const CreateCategoryForm = () => {
 
                 <Center>
                   <AdminSubmit
-                    loading={mutate.isLoading}
+                    loading={isLoading}
                     disabled={
                       !(
                         isValid &&

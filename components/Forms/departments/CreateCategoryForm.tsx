@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import { useMutation, useQuery } from 'react-query';
 import { fetchDepartments } from 'api/products/departments';
 import onErrorHandler from 'api/authentication/onErrorHandler';
+import { addCategory } from 'api/products/categories';
+import { toast } from 'react-toastify';
 import styles from './CreateDepartmentForm.module.scss';
 import InputField from '../Fields/InputField';
 import TextareaField from '../Fields/TextareaField';
@@ -33,8 +35,19 @@ const initialValues = {
 
 const CreateCategoryForm = () => {
   const [images, setImages] = useState<{ publicId: string; url: string }[]>([]);
-  const mutate = useMutation('addCategory');
-  const { data, isLoading } = useQuery('fetch-departments', fetchDepartments, {
+  const [bannersError, setBannersError] = useState<string | null>(null);
+
+  const { isLoading, mutate } = useMutation('addCategory', addCategory, {
+    onSuccess: ({ data, status }) => {
+      if (status === 200) {
+        toast.success(`Category ${data.name} was created succesfully`);
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
+    },
+  });
+  const departments = useQuery('fetch-departments', fetchDepartments, {
     onError: (err) => {
       onErrorHandler(err);
     },
@@ -56,9 +69,19 @@ const CreateCategoryForm = () => {
           validateOnChange
           validationSchema={schema}
           onSubmit={async (values, actions) => {
-            // loginRequest(values);
-            console.log(values);
-            actions.resetForm({ values });
+            if (images.length !== 4) {
+              setBannersError('Departments must have 4 banner images');
+              actions.resetForm({
+                values,
+              });
+            } else {
+              mutate({
+                ...values,
+                banners: images,
+                slug: null,
+              });
+            }
+            actions.resetForm();
           }}
         >
           {({ handleSubmit, isValid, errors, touched, values }) => (
@@ -69,6 +92,10 @@ const CreateCategoryForm = () => {
                   handler={setImages}
                   images={images}
                 />
+
+                {bannersError && (
+                  <span className={styles.ErrorMessege}> {bannersError} </span>
+                )}
 
                 <InputField
                   name="name"
@@ -97,9 +124,9 @@ const CreateCategoryForm = () => {
                   name="departmentId"
                   error={!!(errors.departmentId && touched.departmentId)}
                   label="Department"
-                  loading={isLoading}
+                  loading={departments.isLoading}
                   options={
-                    data?.data.map((element: any) => ({
+                    departments.data?.data.map((element: any) => ({
                       id: element._id,
                       name: element.name,
                     })) || null
@@ -110,7 +137,7 @@ const CreateCategoryForm = () => {
 
                 <Center>
                   <AdminSubmit
-                    loading={mutate.isLoading}
+                    loading={isLoading}
                     disabled={
                       !(
                         isValid &&

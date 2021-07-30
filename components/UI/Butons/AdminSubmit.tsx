@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import styles from './AdminSubmit.module.scss';
 
 interface AdminSubmitProps {
@@ -7,7 +8,7 @@ interface AdminSubmitProps {
 
 const AdminSubmit = ({ disabled, loading }: AdminSubmitProps) => (
   <button className={styles.FillButton} type="submit" disabled={disabled}>
-    {loading ? 'Loading ...' : 'Submit'}
+    {loading ? <LoadingOutlined /> : 'Submit'}
   </button>
 );
 

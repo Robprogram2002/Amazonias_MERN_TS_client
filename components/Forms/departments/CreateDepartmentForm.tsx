@@ -4,6 +4,10 @@ import AdminSubmit from '@components/UI/Butons/AdminSubmit';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useMutation } from 'react-query';
+import { ImageBanner } from 'types/others';
+import { addDepartment } from 'api/products/departments';
+import onErrorHandler from 'api/authentication/onErrorHandler';
+import { toast } from 'react-toastify';
 import styles from './CreateDepartmentForm.module.scss';
 import InputField from '../Fields/InputField';
 import TextareaField from '../Fields/TextareaField';
@@ -27,8 +31,18 @@ const initialValues = {
 };
 
 const CreateDepartmentForm = () => {
-  const [images, setImages] = useState<{ publicId: string; url: string }[]>([]);
-  const mutate = useMutation('addDepartment');
+  const [images, setImages] = useState<ImageBanner[]>([]);
+  const [bannersError, setBannersError] = useState<string | null>(null);
+  const { isLoading, mutate } = useMutation('addDepartment', addDepartment, {
+    onSuccess: ({ data, status }) => {
+      if (status === 200) {
+        toast.success(`Department ${data.name} was created succesfully`);
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
+    },
+  });
 
   return (
     <div
@@ -45,10 +59,24 @@ const CreateDepartmentForm = () => {
           validateOnBlur
           validateOnChange
           validationSchema={schema}
-          onSubmit={async (values, actions) => {
-            // loginRequest(values);
-            console.log(values);
-            actions.resetForm({ values });
+          onSubmit={async ({ description, name }, actions) => {
+            if (images.length !== 4) {
+              setBannersError('Departments must have 4 banner images');
+              actions.resetForm({
+                values: {
+                  description,
+                  name,
+                },
+              });
+            } else {
+              mutate({
+                name,
+                description,
+                banners: images,
+                slug: null,
+              });
+            }
+            actions.resetForm();
           }}
         >
           {({ handleSubmit, isValid, errors, touched, values }) => (
@@ -59,6 +87,10 @@ const CreateDepartmentForm = () => {
                   handler={setImages}
                   images={images}
                 />
+
+                {bannersError && (
+                  <span className={styles.ErrorMessege}> {bannersError} </span>
+                )}
 
                 <InputField
                   name="name"
@@ -85,7 +117,7 @@ const CreateDepartmentForm = () => {
 
                 <Center>
                   <AdminSubmit
-                    loading={mutate.isLoading}
+                    loading={isLoading}
                     disabled={
                       !(
                         isValid &&
