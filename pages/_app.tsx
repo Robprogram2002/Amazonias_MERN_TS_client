@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <AuthProvider>
-          <Component {...pageProps} />;
+          <Component {...pageProps} />
         </AuthProvider>
       </QueryClientProvider>
     </>

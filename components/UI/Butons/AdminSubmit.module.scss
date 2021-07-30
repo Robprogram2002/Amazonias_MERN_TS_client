@@ -1,0 +1,26 @@
+@import '../../../styles/constants';
+
+.FillButton {
+  background-color: $mainBlue;
+  width: 150px;
+  height: 40px;
+  color: white;
+  font-size: 1.1rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  animation: all 0.3s ease-in;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: #234cb4;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

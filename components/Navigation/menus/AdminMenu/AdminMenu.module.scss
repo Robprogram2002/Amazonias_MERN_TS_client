@@ -1,0 +1,77 @@
+@import '../../../../styles/constants.scss';
+
+.LayoutContainer {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.Sider {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 100vh;
+
+  .Menu {
+    overflow-y: scroll;
+    height: 90vh;
+    max-height: '100vh';
+  }
+}
+
+.SiderCollapsed {
+  height: 100%;
+
+  .Menu {
+    height: 100%;
+  }
+}
+
+.Title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: royalblue;
+  width: 100%;
+  height: 70px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+}
+
+.TitleAndIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: royalblue;
+  width: 100%;
+  height: 70px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+
+  @keyframes fadeTitle {
+    from {
+      font-size: 1px;
+    }
+    to {
+      font-size: 1.8rem;
+    }
+  }
+
+  h2 {
+    color: royalblue;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    font-weight: normal;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 2px;
+    padding-left: 12px;
+    font-family: $cursive;
+    animation: fadeTitle 0.2s ease;
+  }
+}

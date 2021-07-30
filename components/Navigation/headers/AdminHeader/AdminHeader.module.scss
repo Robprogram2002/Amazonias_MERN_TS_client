@@ -1,0 +1,111 @@
+@import '../../../../styles/constants.scss';
+
+.Header {
+  background-color: white;
+  height: 70px;
+  max-height: 70px;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.IconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  width: 40px;
+  border-radius: 8px;
+  color: $gray;
+  margin: 0px 8px;
+
+  &:hover {
+    background-color: $secondGray;
+    color: $mainBlue;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 20px;
+  }
+}
+
+.ProfileContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 12px;
+}
+
+.Avatar {
+  border: 2px solid transparent;
+
+  &:hover {
+    border: 2px solid $mainBlue;
+    cursor: pointer;
+  }
+}
+
+.SearchContainer {
+  display: grid;
+  grid-template-columns: 88% 12%;
+  grid-template-rows: 46px;
+  width: 500px;
+  // height: 46px;
+  border: 1px solid $gray;
+  border-radius: 6px;
+  margin: 0px 2rem;
+
+  input {
+    height: 100%;
+    border-radius: 6px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    color: black;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3 ease-in-out;
+    border: 1px solid transparent;
+    padding: 0px 19px;
+
+    &:focus {
+      box-shadow: 0px 0px 8px 0px $lightblue;
+      border: 1px solid $mainBlue;
+    }
+
+    &::placeholder {
+      color: $gray;
+      font-size: 1rem;
+    }
+  }
+}
+
+.SearchIcon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $gray;
+  border-left: 1px solid $gray;
+  font-size: 20px;
+
+  &:hover {
+    border: 1.6px solid $strongGray;
+    cursor: pointer;
+    color: $strongGray;
+    border-radius: 6px;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-left: 2px solid $strongGray;
+    font-weight: bold;
+  }
+}

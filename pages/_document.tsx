@@ -38,7 +38,14 @@ class MyDocument extends Document {
             crossOrigin="anonymous"
           />
         </Head>
-        <body>
+        <body
+          style={{
+            width: '100%',
+            height: '100%',
+            margin: 0,
+            padding: 0,
+          }}
+        >
           <noscript>You need to enable JavaScript to run this app.</noscript>
           <Main />
           <NextScript />

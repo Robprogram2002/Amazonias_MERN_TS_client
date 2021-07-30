@@ -1,0 +1,13 @@
+@import '../../../styles/constants.scss';
+
+.Container {
+  width: 550px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.Column {
+  display: flex;
+  flex-direction: column;
+}

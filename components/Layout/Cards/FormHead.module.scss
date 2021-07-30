@@ -1,0 +1,46 @@
+@import '../../../styles/constants.scss';
+
+.Container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0rem;
+}
+
+.Row {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 2.4rem;
+  letter-spacing: 2px;
+  color: $mainBlack;
+  font-family: $bigFont;
+  margin: 0;
+  padding: 0;
+}
+
+.HeadButton {
+  width: 120px;
+  height: 30px;
+  color: white;
+  background-color: red;
+  border: none;
+  outline: none;
+  letter-spacing: 2px;
+  font-family: $regularFont;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $errorMessege;
+  }
+}
