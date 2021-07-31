@@ -98,7 +98,7 @@ const ImageUpload = ({
           images.map((image: any) => (
             <button
               type="button"
-              onClick={() => removeHandler(image.public_id)}
+              onClick={() => removeHandler(image.publicId)}
               key={image.public_id}
             >
               <Badge count="X" style={{ cursor: 'pointer' }}>

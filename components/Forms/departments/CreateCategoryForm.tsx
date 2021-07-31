@@ -41,6 +41,8 @@ const CreateCategoryForm = () => {
     onSuccess: ({ data, status }) => {
       if (status === 200) {
         toast.success(`Category ${data.name} was created succesfully`);
+        setImages([]);
+        setBannersError(null);
       }
     },
     onError: (error) => {

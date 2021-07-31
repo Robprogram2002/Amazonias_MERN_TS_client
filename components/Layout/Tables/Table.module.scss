@@ -1,0 +1,39 @@
+@import '../../../styles/constants.scss';
+
+.TableContainer {
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 2rem;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.Table {
+  width: 100%;
+
+  tr {
+    border-bottom: 1px solid $gray;
+    height: 60px;
+    padding: 20px;
+
+    &:hover {
+      background-color: $whiteBlue;
+    }
+  }
+
+  td {
+    text-align: center;
+  }
+
+  th {
+    text-align: center;
+  }
+
+  thead {
+    tr:hover {
+      background-color: white;
+    }
+  }
+}

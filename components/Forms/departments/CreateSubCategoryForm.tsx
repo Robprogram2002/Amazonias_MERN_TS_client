@@ -82,7 +82,7 @@ const CreateCategoryForm = () => {
                 )}
 
                 <SelectField
-                  name="departmentId"
+                  name="categoryId"
                   error={!!(errors.categoryId && touched.categoryId)}
                   label="Category"
                   loading={categories.isLoading}

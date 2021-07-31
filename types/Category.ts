@@ -1,4 +1,5 @@
 export interface ICategory {
+  _id: string;
   name: string;
   banners: { publicId: string; url: string }[];
   slug: string;

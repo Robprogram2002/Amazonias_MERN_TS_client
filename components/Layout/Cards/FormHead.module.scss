@@ -44,3 +44,30 @@
     background-color: $errorMessege;
   }
 }
+
+.ListButton {
+  width: 160px;
+  height: 40px;
+  color: white;
+  background-color: $mainBlue;
+  border: none;
+  outline: none;
+  letter-spacing: 2px;
+  font-family: $regularFont;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: $mainBlueHover;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+    margin: 0px 8px;
+  }
+}

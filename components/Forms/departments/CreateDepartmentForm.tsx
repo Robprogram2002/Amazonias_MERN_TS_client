@@ -37,6 +37,8 @@ const CreateDepartmentForm = () => {
     onSuccess: ({ data, status }) => {
       if (status === 200) {
         toast.success(`Department ${data.name} was created succesfully`);
+        setImages([]);
+        setBannersError(null);
       }
     },
     onError: (error) => {

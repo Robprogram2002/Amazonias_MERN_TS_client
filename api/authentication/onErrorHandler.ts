@@ -5,6 +5,7 @@ const onErrorHandler = (err: any) => {
     toast.error('Upps ... Somehting went wrong please try again');
   } else {
     toast.error(err.response.data.message);
+    console.log(err.response.data);
   }
 };
 

@@ -1,8 +1,12 @@
+import ListHead from '@components/Layout/Cards/ListHead';
+import CategoryList from '@components/Layout/Tables/CategoryList';
 import AdminMenu from '@components/Navigation/menus/AdminMenu';
 
 const CategoriesListPage = () => (
   <AdminMenu selectedKey="categories" openKey="categories/list">
-    <h1>Hello , here is the list pf departments </h1>
+    <div style={{ height: '20px' }} />
+    <ListHead width="100%" title="List of categories" />
+    <CategoryList />
   </AdminMenu>
 );
 

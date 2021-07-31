@@ -1,0 +1,15 @@
+@import '../../../styles/constants.scss';
+
+.FilterContainer {
+  width: 100%;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 2rem;
+  border-bottom: 1px solid $gray;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

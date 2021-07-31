@@ -9,7 +9,8 @@ import { useContext } from 'react';
 import { Header } from 'antd/lib/layout/layout';
 import { authContext } from 'context/AuthContext';
 import Avatar from 'antd/lib/avatar/avatar';
-import { BsSearch } from 'react-icons/bs';
+import SimpleIcon from '@components/UI/Icons/SimpleIcon';
+import SearchInput from '@components/Forms/Fields/SearchInput';
 import styles from './AdminHeader.module.scss';
 
 const index = ({
@@ -20,7 +21,6 @@ const index = ({
   collapse: boolean;
 }) => {
   const { user } = useContext(authContext);
-  console.log(user);
   return (
     <Header className={styles.Header}>
       <div
@@ -30,21 +30,18 @@ const index = ({
           justifyContent: 'center',
         }}
       >
-        <div
-          className={styles.IconContainer}
-          onClick={toggle}
-          onKeyDown={toggle}
-          role="menubar"
-          tabIndex={0}
-        >
-          {collapse ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        </div>
-        <div className={styles.SearchContainer}>
-          <input type="text" placeholder="Search ..." />
-          <div className={styles.SearchIcon}>
-            <BsSearch />
-          </div>
-        </div>
+        <SimpleIcon
+          icon={collapse ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          handler={toggle}
+          outline={false}
+        />
+
+        <SearchInput
+          width="500px"
+          placeholder="Search ..."
+          withIcon
+          handler={() => {}}
+        />
       </div>
       <div
         style={{
@@ -53,12 +50,10 @@ const index = ({
           justifyContent: 'center',
         }}
       >
-        <div className={styles.IconContainer}>
-          <BulbFilled />
-        </div>
-        <div className={styles.IconContainer}>
-          <BellFilled />
-        </div>
+        <SimpleIcon icon={<BulbFilled />} handler={() => {}} outline={false} />
+
+        <SimpleIcon icon={<BellFilled />} handler={() => {}} outline={false} />
+
         <div className={styles.ProfileContainer}>
           {user ? (
             <Avatar src={user.photoUrl} size={48} className={styles.Avatar} />

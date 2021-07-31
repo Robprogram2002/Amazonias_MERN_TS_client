@@ -1,0 +1,44 @@
+@import '../../../../styles/constants.scss';
+
+.IconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  width: 40px;
+  border-radius: 8px;
+  color: $gray;
+  margin: 0px 8px;
+
+  &:hover {
+    background-color: $secondGray;
+    color: $mainBlue;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 20px;
+  }
+}
+
+.IconOutlineContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 35px;
+  border-radius: 8px;
+  color: $strongGray;
+  margin: 0px 8px;
+  cursor: pointer;
+  border: 1px solid $strongGray;
+
+  &:hover {
+    border: 1px solid $blackBlue;
+    color: $blackBlue;
+  }
+
+  span {
+    font-size: 20px;
+  }
+}
