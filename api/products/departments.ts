@@ -20,3 +20,12 @@ export const updateDepartment = (data: DepartmentPayload) =>
 
 export const removeDepartment = (slug: string) =>
   axios.delete(`/departments/delete/${slug}`);
+
+export const filterByText = (text: string | null) => {
+  if (text) {
+    return axios.get('/departments/filter/by-text', {
+      params: { text },
+    });
+  }
+  return axios.get('/departments/filter/by-text');
+};

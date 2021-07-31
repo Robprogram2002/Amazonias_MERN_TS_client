@@ -3,6 +3,7 @@ export interface ICategory {
   name: string;
   banners: { publicId: string; url: string }[];
   slug: string;
+  department: any | null;
   departmentId: string;
   description: string;
   createdAt: Date;

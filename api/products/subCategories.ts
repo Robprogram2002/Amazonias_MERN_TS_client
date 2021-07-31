@@ -19,3 +19,11 @@ export const updateSubCategory = (data: SubCategoryPayload) =>
 
 export const removeSubCategory = (slug: string) =>
   axios.delete(`/sub-categories/delete/${slug}`);
+
+export const filterByText = (text: string, categoryId: string) =>
+  axios.get('/sub-categories/filter/by-text', {
+    params: { text, category: categoryId },
+  });
+
+export const filterByDepartment = (categoryId: string) =>
+  axios.get(`/sub-categories/list/by-category/${categoryId}`);

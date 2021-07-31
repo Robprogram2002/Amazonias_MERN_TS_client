@@ -2,20 +2,32 @@ import { useQuery } from 'react-query';
 import { DashOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import SimpleIcon from '@components/UI/Icons/SimpleIcon';
-import { fetchSubCategories } from 'api/products/subCategories';
+import { filterByText } from 'api/products/subCategories';
 import { fetchCategories } from 'api/products/categories';
 import { ISubCategory } from 'types/SubCategory';
-import SearchInput from '@components/Forms/Fields/SearchInput';
 import FilterSelect from '@components/Forms/Fields/FilterSelect';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Center from '../Containers/Center';
 import Table from './Table';
 import styles from './DepartmentList.module.scss';
 
 const SubCategoryList = () => {
-  const { data, isLoading } = useQuery(
-    'fetch-sub-categories',
-    fetchSubCategories,
+  const [subCategories, setSubCategories] = useState<ISubCategory[] | null>(
+    null
+  );
+  const [selectOption, setSelectOption] = useState('');
+  const [value, setValue] = useState('');
+  const [timer, setTimer] = useState<any | null>(null);
+
+  const { isLoading, refetch } = useQuery(
+    ['filter-sub-categories', value, selectOption],
+    () => filterByText(value, selectOption),
     {
+      onSuccess: ({ status, data }) => {
+        if (status === 200) {
+          setSubCategories(data);
+        }
+      },
       onError: (error) => {
         onErrorHandler(error);
       },
@@ -28,19 +40,45 @@ const SubCategoryList = () => {
     },
   });
 
+  const makeSearch = async () => {
+    clearTimeout(timer);
+    setTimer(
+      setTimeout(async () => {
+        try {
+          refetch();
+        } catch (error) {
+          console.log(error);
+        }
+      }, 250)
+    );
+  };
+
+  useEffect(() => {
+    makeSearch();
+  }, [value]);
+
+  useEffect(() => {
+    refetch();
+  }, [selectOption]);
+
   return (
     <>
       <div className={styles.FilterContainer}>
-        <SearchInput
-          width="400px"
-          placeholder="Filter ..."
-          withIcon={false}
-          handler={() => {}}
-        />
+        <div className={styles.SearchContainer} style={{ width: '400px' }}>
+          <input
+            type="text"
+            placeholder="Filter ..."
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+          {isLoading && <Loading3QuartersOutlined />}
+        </div>
 
         <div style={{ width: '200px' }}>
           <FilterSelect
-            handler={() => {}}
+            handler={(e: ChangeEvent<HTMLInputElement>) => {
+              setSelectOption(e.target.value);
+            }}
             loading={categories.isLoading}
             placeholder="All categories"
             options={
@@ -65,50 +103,21 @@ const SubCategoryList = () => {
           </tr>
         </thead>
         <tbody>
-          {isLoading && (
-            <tr>
-              <td>
-                <div>
-                  <input type="checkbox" value="" />
-                </div>
-              </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td> 30 </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td>
-                <DashOutlined />
-              </td>
-            </tr>
-          )}
-          {data &&
-            data.data.map((category: ISubCategory) => (
+          {subCategories &&
+            subCategories.map((sub: ISubCategory) => (
               <tr>
                 <td>
                   <div>
                     <input type="checkbox" value="" />
                   </div>
                 </td>
-                <td> {category._id} </td>
+                <td> {sub._id} </td>
                 <td>
-                  <b> {category.name} </b>
+                  <b> {sub.name} </b>
                 </td>
-                <td> {category.slug} </td>
+                <td> {sub.slug} </td>
                 <td> 30 </td>
-                <td> {category.categoryId} </td>
+                <td> {sub.category[0]!.name} </td>
                 <td>
                   <Center>
                     <SimpleIcon

@@ -21,3 +21,11 @@ export const updateCategory = (data: CategoryPayload) =>
 
 export const removeCategory = (slug: string) =>
   axios.delete(`/categories/delete/${slug}`);
+
+export const filterByText = (text: string, departmentId: string) =>
+  axios.get('/categories/filter/by-text', {
+    params: { text, department: departmentId },
+  });
+
+export const filterByDepartment = (departmentId: string) =>
+  axios.get(`/categories/list/by-department/${departmentId}`);

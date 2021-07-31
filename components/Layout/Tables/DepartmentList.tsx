@@ -1,30 +1,63 @@
-import { fetchDepartments } from 'api/products/departments';
+import { useEffect, useState } from 'react';
+import { filterByText } from 'api/products/departments';
 import { useQuery } from 'react-query';
 import { IDepartment } from 'types/Department';
 import { DashOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import SimpleIcon from '@components/UI/Icons/SimpleIcon';
-import SearchInput from '@components/Forms/Fields/SearchInput';
 import Center from '../Containers/Center';
 import Table from './Table';
 import styles from './DepartmentList.module.scss';
 
 const DepartmentList = () => {
-  const { data, isLoading } = useQuery('fetch-departments', fetchDepartments, {
-    onError: (error) => {
-      onErrorHandler(error);
-    },
-  });
+  const [departments, setDepartments] = useState<IDepartment[] | null>(null);
+  const [value, setValue] = useState('');
+  const [timer, setTimer] = useState<any | null>(null);
+
+  const { isLoading, refetch } = useQuery(
+    ['filter-departments', value],
+    () => filterByText(value),
+    {
+      onSuccess: ({ status, data }) => {
+        if (status === 200) {
+          setDepartments(data);
+        }
+      },
+      onError: (error) => {
+        onErrorHandler(error);
+      },
+    }
+  );
+
+  const makeSearch = async () => {
+    clearTimeout(timer);
+    setTimer(
+      setTimeout(async () => {
+        try {
+          refetch();
+        } catch (error) {
+          console.log(error);
+        }
+      }, 250)
+    );
+  };
+
+  useEffect(() => {
+    makeSearch();
+  }, [value]);
 
   return (
     <>
       <div className={styles.FilterContainer}>
-        <SearchInput
-          width="400px"
-          placeholder="Filter ..."
-          withIcon={false}
-          handler={() => {}}
-        />
+        <div className={styles.SearchContainer} style={{ width: '400px' }}>
+          <input
+            type="text"
+            placeholder="Filter ..."
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+          {isLoading && <Loading3QuartersOutlined />}
+        </div>
       </div>
       <Table>
         <thead>
@@ -39,40 +72,9 @@ const DepartmentList = () => {
           </tr>
         </thead>
         <tbody>
-          {isLoading && (
-            <tr>
-              <td>
-                <div>
-                  <input type="checkbox" value="" />
-                </div>
-              </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td>
-                <b>
-                  {' '}
-                  <Loading3QuartersOutlined />{' '}
-                </b>
-              </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td>
-                {' '}
-                <Loading3QuartersOutlined />{' '}
-              </td>
-              <td> 30 </td>
-              <td>
-                <DashOutlined />
-              </td>
-            </tr>
-          )}
-          {data &&
-            data.data.map((department: IDepartment) => (
-              <tr>
+          {departments &&
+            departments.map((department: IDepartment) => (
+              <tr key={department._id}>
                 <td>
                   <div>
                     <input type="checkbox" value="" />

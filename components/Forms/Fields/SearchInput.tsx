@@ -3,12 +3,12 @@ import styles from './SearchInput.module.scss';
 
 const SearchInput = ({
   withIcon,
-  handler,
+  onChangeHandler,
   placeholder,
   width,
 }: {
   withIcon: boolean;
-  handler: any;
+  onChangeHandler: any;
   placeholder: string;
   width: string;
 }) => (
@@ -16,7 +16,7 @@ const SearchInput = ({
     className={withIcon ? styles.SearchIconContainer : styles.SearchContainer}
     style={{ width }}
   >
-    <input type="text" placeholder={placeholder} onChange={handler} />
+    <input type="text" placeholder={placeholder} onChange={onChangeHandler} />
     {withIcon && (
       <div className={styles.SearchIcon}>
         <BsSearch />

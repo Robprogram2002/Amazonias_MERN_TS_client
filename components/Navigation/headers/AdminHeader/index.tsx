@@ -40,7 +40,7 @@ const index = ({
           width="500px"
           placeholder="Search ..."
           withIcon
-          handler={() => {}}
+          onChangeHandler={() => {}}
         />
       </div>
       <div
