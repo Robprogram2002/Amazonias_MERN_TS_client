@@ -8,7 +8,7 @@ interface SubCategoryPayload {
 
 export const fetchSubCategories = () => axios.get('/sub-categories/list');
 
-export const fetchOneSubCategory = (slug: string) =>
+export const fetchOneSubCategory = (slug: string | string[]) =>
   axios.get(`/sub-categories/list/${slug}`);
 
 export const addSubCategory = (data: SubCategoryPayload) =>
@@ -17,8 +17,8 @@ export const addSubCategory = (data: SubCategoryPayload) =>
 export const updateSubCategory = (data: SubCategoryPayload) =>
   axios.patch(`/sub-categories/update/${data.slug}`, { ...data });
 
-export const removeSubCategory = (slug: string) =>
-  axios.delete(`/sub-categories/delete/${slug}`);
+export const removeSubCategory = (id: string) =>
+  axios.delete(`/sub-categories/delete/${id}`);
 
 export const filterByText = (text: string, categoryId: string) =>
   axios.get('/sub-categories/filter/by-text', {

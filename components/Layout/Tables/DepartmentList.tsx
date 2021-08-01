@@ -5,7 +5,7 @@ import { IDepartment } from 'types/Department';
 import { DashOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import SimpleIcon from '@components/UI/Icons/SimpleIcon';
-import Center from '../Containers/Center';
+import { useRouter } from 'next/router';
 import Table from './Table';
 import styles from './DepartmentList.module.scss';
 
@@ -13,6 +13,8 @@ const DepartmentList = () => {
   const [departments, setDepartments] = useState<IDepartment[] | null>(null);
   const [value, setValue] = useState('');
   const [timer, setTimer] = useState<any | null>(null);
+  const [openEdit, setOpenEdit] = useState<string | null>(null);
+  const router = useRouter();
 
   const { isLoading, refetch } = useQuery(
     ['filter-departments', value],
@@ -45,6 +47,14 @@ const DepartmentList = () => {
   useEffect(() => {
     makeSearch();
   }, [value]);
+
+  const pushEdit = (id: string) => {
+    router.push(`/admin/departments/edit/${id}`);
+  };
+
+  const deleteHandler = (id: string) => {
+    console.log(id);
+  };
 
   return (
     <>
@@ -88,7 +98,7 @@ const DepartmentList = () => {
                 <td> {department.slug} </td>
                 <td> 30 </td>
                 <td>
-                  <Center>
+                  <div className={styles.EditButton}>
                     <SimpleIcon
                       icon={
                         <DashOutlined
@@ -97,9 +107,41 @@ const DepartmentList = () => {
                         />
                       }
                       outline
-                      handler={() => {}}
+                      handler={() => {
+                        if (openEdit === department._id) {
+                          setOpenEdit(null);
+                        } else {
+                          setOpenEdit(department._id);
+                        }
+                      }}
                     />
-                  </Center>
+                    <div
+                      className={
+                        openEdit === department._id
+                          ? styles.FloatCardActive
+                          : styles.FloatCard
+                      }
+                    >
+                      <div className={styles.EditRow}>
+                        <span> View detail </span>
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.EditRow}
+                        onClick={() => pushEdit(department._id)}
+                      >
+                        <span> Edit category </span>
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.EditRow}
+                        style={{ color: 'red' }}
+                        onClick={() => deleteHandler(department._id)}
+                      >
+                        <span> Delete </span>
+                      </button>
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}

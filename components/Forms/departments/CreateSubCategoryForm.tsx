@@ -5,8 +5,10 @@ import * as Yup from 'yup';
 import { useMutation, useQuery } from 'react-query';
 import { fetchCategories } from 'api/products/categories';
 import onErrorHandler from 'api/authentication/onErrorHandler';
-import { addSubCategory } from 'api/products/subCategories';
+import { addSubCategory, updateSubCategory } from 'api/products/subCategories';
 import { toast } from 'react-toastify';
+import { ISubCategory } from 'types/SubCategory';
+import { useRouter } from 'next/router';
 import styles from './CreateDepartmentForm.module.scss';
 import InputField from '../Fields/InputField';
 import SelectField from '../Fields/SelectField';
@@ -20,13 +22,10 @@ const schema = Yup.object({
   categoryId: Yup.string().trim().required('is required select a department'),
 });
 
-const initialValues = {
-  name: '',
-  categoryId: '',
-};
+const CreateCategoryForm = ({ sub }: { sub: ISubCategory | null }) => {
+  const router = useRouter();
 
-const CreateCategoryForm = () => {
-  const { isLoading, mutate } = useMutation('addCategory', addSubCategory, {
+  const { isLoading, mutate } = useMutation('addSubCategory', addSubCategory, {
     onSuccess: ({ data, status }) => {
       if (status === 200) {
         toast.success(`Sub-category ${data.name} was created succesfully`);
@@ -36,6 +35,19 @@ const CreateCategoryForm = () => {
       onErrorHandler(error);
     },
   });
+
+  const update = useMutation('updateSubCategory', updateSubCategory, {
+    onSuccess: ({ status }) => {
+      if (status === 200) {
+        router.push('/admin/sub-categories/list');
+        toast.success(`Sub-category was updated succesfully`);
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
+    },
+  });
+
   const categories = useQuery('fetch-departments', fetchCategories, {
     onError: (err) => {
       onErrorHandler(err);
@@ -53,11 +65,18 @@ const CreateCategoryForm = () => {
     >
       <div className={styles.Container}>
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            name: sub ? sub.name : '',
+            categoryId: sub ? sub.categoryId : '',
+          }}
           validateOnBlur
           validateOnChange
           validationSchema={schema}
           onSubmit={async (values, actions) => {
+            if (sub) {
+              update.mutate({ ...values, slug: sub.slug });
+              return;
+            }
             mutate({
               ...values,
               slug: null,
@@ -99,6 +118,7 @@ const CreateCategoryForm = () => {
                 <Center>
                   <AdminSubmit
                     loading={isLoading}
+                    update={sub !== null}
                     disabled={
                       !(
                         isValid &&

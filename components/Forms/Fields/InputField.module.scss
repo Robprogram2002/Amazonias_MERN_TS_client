@@ -7,6 +7,11 @@
   padding: 0;
   margin: 0;
 
+  select:hover {
+    box-shadow: 0px 0px 8px 0px $lightblue;
+    border: 1px solid $mainBlue;
+  }
+
   .Field {
     &:focus {
       box-shadow: 0px 0px 8px 0px $lightblue;

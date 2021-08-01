@@ -47,3 +47,47 @@
     }
   }
 }
+
+.EditButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .FloatCard {
+    display: none;
+  }
+
+  .FloatCardActive {
+    display: block;
+  }
+}
+
+.FloatCardActive {
+  width: 120px;
+  border: none;
+  border-radius: 4px;
+  background-color: white;
+  border: 1px solid $gray;
+  position: absolute;
+  top: 2.55rem;
+  right: 1.6rem;
+  z-index: 100;
+}
+
+.EditRow {
+  height: 30px;
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding-left: 8px;
+  outline: none;
+  border: none;
+
+  &:hover {
+    font-weight: bold;
+  }
+}

@@ -2,12 +2,12 @@ import CreateDepartmentForm from '@components/Forms/departments/CreateDepartment
 import AdminMenu from '@components/Navigation/menus/AdminMenu';
 import FormHead from '@components/Layout/Cards/FormHead';
 
-const DepartmemtsCreatePage = () => (
-  <AdminMenu selectedKey="departments" openKey="departments/create">
-    <FormHead width="550px" title="Add new department" update={false} />
+const UpdateDepartment = () => (
+  <AdminMenu selectedKey="departments" openKey="">
+    <FormHead width="550px" title="Edit department" update />
     <CreateDepartmentForm />
     <div style={{ height: '30px' }} />
   </AdminMenu>
 );
 
-export default DepartmemtsCreatePage;
+export default UpdateDepartment;

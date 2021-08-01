@@ -10,7 +10,7 @@ interface CategoryPayload {
 
 export const fetchCategories = () => axios.get('/categories/list');
 
-export const fetchOneCategory = (slug: string) =>
+export const fetchOneCategory = (slug: string | string[]) =>
   axios.get(`/categories/list/${slug}`);
 
 export const addCategory = (data: CategoryPayload) =>
@@ -19,8 +19,8 @@ export const addCategory = (data: CategoryPayload) =>
 export const updateCategory = (data: CategoryPayload) =>
   axios.patch(`/categories/update/${data.slug}`, { ...data });
 
-export const removeCategory = (slug: string) =>
-  axios.delete(`/categories/delete/${slug}`);
+export const removeCategory = (id: string) =>
+  axios.delete(`/categories/delete/${id}`);
 
 export const filterByText = (text: string, departmentId: string) =>
   axios.get('/categories/filter/by-text', {

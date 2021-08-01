@@ -1,12 +1,22 @@
 import styles from './FormHead.module.scss';
 
-const FormHead = ({ width, title }: { width: string; title: string }) => (
+const FormHead = ({
+  width,
+  title,
+  update,
+}: {
+  width: string;
+  title: string;
+  update: boolean;
+}) => (
   <div className={styles.Container}>
     <div style={{ width }} className={styles.Row}>
       <h1 className={styles.Title}>{title}</h1>
-      <button type="button" className={styles.HeadButton}>
-        Clear
-      </button>
+      {!update && (
+        <button type="button" className={styles.HeadButton}>
+          Clear
+        </button>
+      )}
     </div>
   </div>
 );

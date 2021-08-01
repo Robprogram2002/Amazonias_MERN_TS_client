@@ -119,6 +119,7 @@ const CreateDepartmentForm = () => {
 
                 <Center>
                   <AdminSubmit
+                    update={false}
                     loading={isLoading}
                     disabled={
                       !(

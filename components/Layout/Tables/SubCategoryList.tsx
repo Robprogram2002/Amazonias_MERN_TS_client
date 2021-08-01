@@ -1,15 +1,20 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { DashOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import SimpleIcon from '@components/UI/Icons/SimpleIcon';
-import { filterByText } from 'api/products/subCategories';
+import { filterByText, removeSubCategory } from 'api/products/subCategories';
 import { fetchCategories } from 'api/products/categories';
 import { ISubCategory } from 'types/SubCategory';
 import FilterSelect from '@components/Forms/Fields/FilterSelect';
 import { ChangeEvent, useEffect, useState } from 'react';
-import Center from '../Containers/Center';
+import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import Table from './Table';
+
 import styles from './DepartmentList.module.scss';
+
+const MySwal = withReactContent(Swal);
 
 const SubCategoryList = () => {
   const [subCategories, setSubCategories] = useState<ISubCategory[] | null>(
@@ -18,6 +23,8 @@ const SubCategoryList = () => {
   const [selectOption, setSelectOption] = useState('');
   const [value, setValue] = useState('');
   const [timer, setTimer] = useState<any | null>(null);
+  const [openEdit, setOpenEdit] = useState<string | null>(null);
+  const router = useRouter();
 
   const { isLoading, refetch } = useQuery(
     ['filter-sub-categories', value, selectOption],
@@ -34,9 +41,26 @@ const SubCategoryList = () => {
     }
   );
 
-  const categories = useQuery('fetch-departments', fetchCategories, {
+  const categories = useQuery('fetch-categories', fetchCategories, {
     onError: (err) => {
       onErrorHandler(err);
+    },
+  });
+
+  const mutation = useMutation('remove-subcategory', removeSubCategory, {
+    onSuccess: ({ status }) => {
+      if (status === 200) {
+        // toast.success('the sub-category was deleted');
+        MySwal.fire(
+          'Deleted!',
+          'The sub-category has been deleted.',
+          'success'
+        );
+        refetch();
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
     },
   });
 
@@ -60,6 +84,14 @@ const SubCategoryList = () => {
   useEffect(() => {
     refetch();
   }, [selectOption]);
+
+  const pushEdit = (slug: string) => {
+    router.push(`/admin/sub-categories/edit/${slug}`);
+  };
+
+  const deleteHandler = (id: string) => {
+    mutation.mutate(id);
+  };
 
   return (
     <>
@@ -119,7 +151,7 @@ const SubCategoryList = () => {
                 <td> 30 </td>
                 <td> {sub.category[0]!.name} </td>
                 <td>
-                  <Center>
+                  <div className={styles.EditButton}>
                     <SimpleIcon
                       icon={
                         <DashOutlined
@@ -128,9 +160,57 @@ const SubCategoryList = () => {
                         />
                       }
                       outline
-                      handler={() => {}}
+                      handler={() => {
+                        if (openEdit === sub._id) {
+                          setOpenEdit(null);
+                        } else {
+                          setOpenEdit(sub._id);
+                        }
+                      }}
                     />
-                  </Center>
+                    <div
+                      className={
+                        openEdit === sub._id
+                          ? styles.FloatCardActive
+                          : styles.FloatCard
+                      }
+                    >
+                      <div className={styles.EditRow}>
+                        <span> View detail </span>
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.EditRow}
+                        onClick={() => pushEdit(sub.slug)}
+                      >
+                        <span> Edit </span>
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.EditRow}
+                        style={{ color: mutation.isLoading ? 'black' : 'red' }}
+                        onClick={() => {
+                          MySwal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!',
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              deleteHandler(sub._id);
+                            }
+                          });
+                        }}
+                      >
+                        <span>
+                          {mutation.isLoading ? 'Loading...' : 'Delete '}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}

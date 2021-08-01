@@ -6,8 +6,10 @@ import * as Yup from 'yup';
 import { useMutation, useQuery } from 'react-query';
 import { fetchDepartments } from 'api/products/departments';
 import onErrorHandler from 'api/authentication/onErrorHandler';
-import { addCategory } from 'api/products/categories';
+import { addCategory, updateCategory } from 'api/products/categories';
 import { toast } from 'react-toastify';
+import { ICategory } from 'types/Category';
+import { useRouter } from 'next/router';
 import styles from './CreateDepartmentForm.module.scss';
 import InputField from '../Fields/InputField';
 import TextareaField from '../Fields/TextareaField';
@@ -27,15 +29,12 @@ const schema = Yup.object({
   departmentId: Yup.string().trim().required('is required select a department'),
 });
 
-const initialValues = {
-  name: '',
-  description: '',
-  departmentId: '',
-};
-
-const CreateCategoryForm = () => {
-  const [images, setImages] = useState<{ publicId: string; url: string }[]>([]);
+const CreateCategoryForm = ({ category }: { category: ICategory | null }) => {
+  const [images, setImages] = useState<{ publicId: string; url: string }[]>(
+    category ? category.banners : []
+  );
   const [bannersError, setBannersError] = useState<string | null>(null);
+  const router = useRouter();
 
   const { isLoading, mutate } = useMutation('addCategory', addCategory, {
     onSuccess: ({ data, status }) => {
@@ -49,9 +48,22 @@ const CreateCategoryForm = () => {
       onErrorHandler(error);
     },
   });
+
   const departments = useQuery('fetch-departments', fetchDepartments, {
     onError: (err) => {
       onErrorHandler(err);
+    },
+  });
+
+  const update = useMutation('updateSubCategory', updateCategory, {
+    onSuccess: ({ status }) => {
+      if (status === 200) {
+        router.push('/admin/categories/list');
+        toast.success(`Category was updated succesfully`);
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
     },
   });
 
@@ -66,24 +78,34 @@ const CreateCategoryForm = () => {
     >
       <div className={styles.Container}>
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            name: category?.name || '',
+            description: category?.description || '',
+            departmentId: category?.departmentId || '',
+          }}
           validateOnBlur
           validateOnChange
           validationSchema={schema}
           onSubmit={async (values, actions) => {
             if (images.length !== 4) {
               setBannersError('Departments must have 4 banner images');
-              actions.resetForm({
+              return actions.resetForm({
                 values,
               });
-            } else {
-              mutate({
+            }
+            if (category) {
+              return update.mutate({
                 ...values,
+                slug: category.slug,
                 banners: images,
-                slug: null,
               });
             }
-            actions.resetForm();
+            mutate({
+              ...values,
+              banners: images,
+              slug: null,
+            });
+            return actions.resetForm();
           }}
         >
           {({ handleSubmit, isValid, errors, touched, values }) => (
@@ -139,6 +161,7 @@ const CreateCategoryForm = () => {
 
                 <Center>
                   <AdminSubmit
+                    update={category !== null}
                     loading={isLoading}
                     disabled={
                       !(

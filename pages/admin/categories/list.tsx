@@ -5,7 +5,11 @@ import AdminMenu from '@components/Navigation/menus/AdminMenu';
 const CategoriesListPage = () => (
   <AdminMenu selectedKey="categories" openKey="categories/list">
     <div style={{ height: '20px' }} />
-    <ListHead width="100%" title="List of categories" />
+    <ListHead
+      width="100%"
+      title="List of categories"
+      redirect="/admin/categories/create"
+    />
     <CategoryList />
   </AdminMenu>
 );

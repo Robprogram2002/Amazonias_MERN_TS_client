@@ -24,3 +24,35 @@
     cursor: not-allowed;
   }
 }
+
+.CancelButton {
+  background-color: $errorMessege;
+  width: 150px;
+  height: 40px;
+  color: white;
+  font-size: 1.1rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  animation: all 0.3s ease-in;
+  letter-spacing: 1px;
+  margin: 0rem 1.4rem;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: $darkError;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.UpdateContainer {
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+}
