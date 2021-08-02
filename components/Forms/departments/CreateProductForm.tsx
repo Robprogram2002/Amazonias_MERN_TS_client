@@ -8,7 +8,6 @@ import { fetchDepartments } from 'api/products/departments';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import { addCategory, updateCategory } from 'api/products/categories';
 import { toast } from 'react-toastify';
-import { ICategory } from 'types/Category';
 import { useRouter } from 'next/router';
 import { ImageBanner } from 'types/others';
 import styles from './CreateDepartmentForm.module.scss';
@@ -30,12 +29,17 @@ const schema = Yup.object({
   departmentId: Yup.string().trim().required('is required select a department'),
 });
 
-const CreateCategoryForm = ({ category }: { category: ICategory | null }) => {
-  const [images, setImages] = useState<ImageBanner[]>(
-    category ? category.banners : []
-  );
+const CreateProductForm = ({
+  type,
+  product,
+}: {
+  type: string;
+  product: any;
+}) => {
+  const [images, setImages] = useState<ImageBanner[]>([]);
   const [bannersError, setBannersError] = useState<string | null>(null);
   const router = useRouter();
+  console.log(type);
 
   const { isLoading, mutate } = useMutation('addCategory', addCategory, {
     onSuccess: ({ data, status }) => {
@@ -80,9 +84,9 @@ const CreateCategoryForm = ({ category }: { category: ICategory | null }) => {
       <div className={styles.Container}>
         <Formik
           initialValues={{
-            name: category?.name || '',
-            description: category?.description || '',
-            departmentId: category?.departmentId || '',
+            name: product?.name || '',
+            description: product?.description || '',
+            departmentId: product?.departmentId || '',
           }}
           validateOnBlur
           validateOnChange
@@ -94,10 +98,10 @@ const CreateCategoryForm = ({ category }: { category: ICategory | null }) => {
                 values,
               });
             }
-            if (category) {
+            if (product) {
               return update.mutate({
                 ...values,
-                slug: category.slug,
+                slug: product.slug,
                 banners: images,
               });
             }
@@ -162,7 +166,7 @@ const CreateCategoryForm = ({ category }: { category: ICategory | null }) => {
 
                 <Center>
                   <AdminSubmit
-                    update={category !== null}
+                    update={product !== null}
                     loading={isLoading}
                     disabled={
                       !(
@@ -183,4 +187,4 @@ const CreateCategoryForm = ({ category }: { category: ICategory | null }) => {
   );
 };
 
-export default CreateCategoryForm;
+export default CreateProductForm;

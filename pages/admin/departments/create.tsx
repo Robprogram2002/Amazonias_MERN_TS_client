@@ -5,7 +5,7 @@ import FormHead from '@components/Layout/Cards/FormHead';
 const DepartmemtsCreatePage = () => (
   <AdminMenu selectedKey="departments" openKey="departments/create">
     <FormHead width="550px" title="Add new department" update={false} />
-    <CreateDepartmentForm />
+    <CreateDepartmentForm department={null} />
     <div style={{ height: '30px' }} />
   </AdminMenu>
 );

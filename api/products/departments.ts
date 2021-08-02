@@ -9,7 +9,7 @@ interface DepartmentPayload {
 
 export const fetchDepartments = () => axios.get('/departments/list');
 
-export const fetchOneDepartment = (slug: string) =>
+export const fetchOneDepartment = (slug: string | string[]) =>
   axios.get(`/departments/list/${slug}`);
 
 export const addDepartment = (data: DepartmentPayload) =>
@@ -18,8 +18,8 @@ export const addDepartment = (data: DepartmentPayload) =>
 export const updateDepartment = (data: DepartmentPayload) =>
   axios.patch(`/departments/update/${data.slug}`, { ...data });
 
-export const removeDepartment = (slug: string) =>
-  axios.delete(`/departments/delete/${slug}`);
+export const removeDepartment = (id: string) =>
+  axios.delete(`/departments/delete/${id}`);
 
 export const filterByText = (text: string | null) => {
   if (text) {

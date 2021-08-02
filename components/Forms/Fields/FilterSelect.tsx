@@ -17,7 +17,9 @@ const FilterSelect = ({
   <>
     <div className={styles.FieldContainer}>
       <select className={styles.Field} onChange={handler}>
-        <option value=""> {loading ? 'Loading ...' : placeholder} </option>
+        {placeholder !== '' && (
+          <option value=""> {loading ? 'Loading ...' : placeholder} </option>
+        )}
         {options &&
           options.map((element) => (
             <option value={element.id}> {element.name} </option>

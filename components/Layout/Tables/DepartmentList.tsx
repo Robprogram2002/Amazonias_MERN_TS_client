@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { filterByText } from 'api/products/departments';
-import { useQuery } from 'react-query';
+import { filterByText, removeDepartment } from 'api/products/departments';
+import { useMutation, useQuery } from 'react-query';
 import { IDepartment } from 'types/Department';
 import { DashOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import SimpleIcon from '@components/UI/Icons/SimpleIcon';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import Table from './Table';
 import styles from './DepartmentList.module.scss';
+
+const MySwal = withReactContent(Swal);
 
 const DepartmentList = () => {
   const [departments, setDepartments] = useState<IDepartment[] | null>(null);
@@ -31,6 +35,19 @@ const DepartmentList = () => {
     }
   );
 
+  const mutation = useMutation('remove-department', removeDepartment, {
+    onSuccess: ({ status }) => {
+      if (status === 200) {
+        // toast.success('the sub-category was deleted');
+        MySwal.fire('Deleted!', 'The department has been deleted.', 'success');
+        refetch();
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
+    },
+  });
+
   const makeSearch = async () => {
     clearTimeout(timer);
     setTimer(
@@ -48,12 +65,12 @@ const DepartmentList = () => {
     makeSearch();
   }, [value]);
 
-  const pushEdit = (id: string) => {
-    router.push(`/admin/departments/edit/${id}`);
+  const pushEdit = (slug: string) => {
+    router.push(`/admin/departments/edit/${slug}`);
   };
 
   const deleteHandler = (id: string) => {
-    console.log(id);
+    mutation.mutate(id);
   };
 
   return (
@@ -128,17 +145,33 @@ const DepartmentList = () => {
                       <button
                         type="button"
                         className={styles.EditRow}
-                        onClick={() => pushEdit(department._id)}
+                        onClick={() => pushEdit(department.slug)}
                       >
                         <span> Edit category </span>
                       </button>
                       <button
                         type="button"
                         className={styles.EditRow}
-                        style={{ color: 'red' }}
-                        onClick={() => deleteHandler(department._id)}
+                        style={{ color: mutation.isLoading ? 'black' : 'red' }}
+                        onClick={() => {
+                          MySwal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!',
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              deleteHandler(department._id);
+                            }
+                          });
+                        }}
                       >
-                        <span> Delete </span>
+                        <span>
+                          {mutation.isLoading ? 'Loading...' : 'Delete '}
+                        </span>
                       </button>
                     </div>
                   </div>

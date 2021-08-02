@@ -5,9 +5,11 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useMutation } from 'react-query';
 import { ImageBanner } from 'types/others';
-import { addDepartment } from 'api/products/departments';
+import { addDepartment, updateDepartment } from 'api/products/departments';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import { toast } from 'react-toastify';
+import { IDepartment } from 'types/Department';
+import { useRouter } from 'next/router';
 import styles from './CreateDepartmentForm.module.scss';
 import InputField from '../Fields/InputField';
 import TextareaField from '../Fields/TextareaField';
@@ -25,20 +27,35 @@ const schema = Yup.object({
     .min(50, 'description must be at least 50 characters'),
 });
 
-const initialValues = {
-  name: '',
-  description: '',
-};
-
-const CreateDepartmentForm = () => {
-  const [images, setImages] = useState<ImageBanner[]>([]);
+const CreateDepartmentForm = ({
+  department,
+}: {
+  department: IDepartment | null;
+}) => {
+  const [images, setImages] = useState<ImageBanner[]>(
+    department ? department.banners : []
+  );
   const [bannersError, setBannersError] = useState<string | null>(null);
+  const router = useRouter();
+
   const { isLoading, mutate } = useMutation('addDepartment', addDepartment, {
     onSuccess: ({ data, status }) => {
       if (status === 200) {
         toast.success(`Department ${data.name} was created succesfully`);
         setImages([]);
         setBannersError(null);
+      }
+    },
+    onError: (error) => {
+      onErrorHandler(error);
+    },
+  });
+
+  const update = useMutation('update-department', updateDepartment, {
+    onSuccess: ({ status }) => {
+      if (status === 200) {
+        router.push('/admin/departments/list');
+        toast.success(`Department was updated succesfully`);
       }
     },
     onError: (error) => {
@@ -57,28 +74,37 @@ const CreateDepartmentForm = () => {
     >
       <div className={styles.Container}>
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            name: department?.name || '',
+            description: department?.description || '',
+          }}
           validateOnBlur
           validateOnChange
           validationSchema={schema}
-          onSubmit={async ({ description, name }, actions) => {
+          onSubmit={async (values, actions) => {
             if (images.length !== 4) {
               setBannersError('Departments must have 4 banner images');
-              actions.resetForm({
+              return actions.resetForm({
                 values: {
-                  description,
-                  name,
+                  ...values,
                 },
+              });
+            }
+
+            if (department) {
+              update.mutate({
+                ...values,
+                slug: department.slug,
+                banners: images,
               });
             } else {
               mutate({
-                name,
-                description,
+                ...values,
                 banners: images,
                 slug: null,
               });
             }
-            actions.resetForm();
+            return actions.resetForm();
           }}
         >
           {({ handleSubmit, isValid, errors, touched, values }) => (
@@ -119,8 +145,8 @@ const CreateDepartmentForm = () => {
 
                 <Center>
                   <AdminSubmit
-                    update={false}
-                    loading={isLoading}
+                    update={department !== null}
+                    loading={isLoading || update.isLoading}
                     disabled={
                       !(
                         isValid &&
