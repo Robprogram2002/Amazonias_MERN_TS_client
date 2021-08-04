@@ -16,7 +16,7 @@ const InputField = ({
   placeholder,
   label,
 }: InputFieldProps) => (
-  <>
+  <div>
     <label className={styles.Label} htmlFor={name}>
       {label}
     </label>
@@ -34,7 +34,7 @@ const InputField = ({
       component="span"
       className={styles.ErrorMessege}
     />
-  </>
+  </div>
 );
 
 export default InputField;

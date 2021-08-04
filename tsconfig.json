@@ -17,7 +17,10 @@
     "paths": {
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@api/*": ["api/*"],
+      "@types/*": ["types/*"],
+      "@context/*": ["context/*"]
     }
   },
   "include": [
@@ -28,5 +31,6 @@
     "jest.config.js",
     "jest.setup.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./node_modules", "./node_modules/*"],
+  "skipLibCheck": true
 }

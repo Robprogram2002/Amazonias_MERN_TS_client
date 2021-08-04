@@ -8,13 +8,17 @@
   margin: 0;
 
   select:hover {
-    box-shadow: 0px 0px 8px 0px $lightblue;
     border: 1px solid $mainBlue;
+    cursor: pointer;
   }
 
   .Field {
     &:focus {
       box-shadow: 0px 0px 8px 0px $lightblue;
+      border: 1px solid $mainBlue;
+    }
+
+    &:hover {
       border: 1px solid $mainBlue;
     }
   }
@@ -77,6 +81,19 @@
   border: none;
   border-radius: 4px;
   padding: 0 12px;
+}
+
+.MultiSelect {
+  width: 100%;
+  border-radius: 4px;
+
+  // &:hover {
+  //   border: 1px solid $mainBlue;
+  // }
+
+  div {
+    background-color: white;
+  }
 }
 
 .Textarea {

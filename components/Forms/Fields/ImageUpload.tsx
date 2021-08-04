@@ -1,4 +1,4 @@
-import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import Resizer from 'react-image-file-resizer';
 import { Badge } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
@@ -21,7 +21,6 @@ const ImageUpload = ({
   const uploadMutation = useMutation('upload-file', uploadImage, {
     onSuccess: (response) => {
       if (response.status === 200) {
-        console.log(response.data);
         handler((prevState) => prevState.concat(response.data));
       }
     },
@@ -73,14 +72,12 @@ const ImageUpload = ({
 
   return (
     <div>
+      <h3 className={styles.Label}>{label}</h3>
       <label htmlFor="image">
-        <h3 className={styles.Label}>{label}</h3>
-      </label>
-      <label htmlFor="image">
-        <button type="button" className={styles.FileLabel}>
+        <div className={styles.FileLabel}>
           <BsCloudUpload size={20} style={{ marginRight: '6px' }} />
           <span>Upload File</span>
-        </button>
+        </div>
       </label>
       <input
         type="file"
@@ -107,13 +104,16 @@ const ImageUpload = ({
             </button>
           ))
         ) : (
-          <>
-            <Avatar size={80} shape="square" icon={<UserOutlined />} />
-            <Avatar size={80} shape="square" icon={<UserOutlined />} />
-            <Avatar size={80} shape="square" icon={<UserOutlined />} />
-            <Avatar size={80} shape="square" icon={<UserOutlined />} />
-          </>
+          // ) : (
+          //   <>
+          //     <Avatar size={80} shape="square" icon={<UserOutlined />} />
+          //     <Avatar size={80} shape="square" icon={<UserOutlined />} />
+          //     <Avatar size={80} shape="square" icon={<UserOutlined />} />
+          //     <Avatar size={80} shape="square" icon={<UserOutlined />} />
+          //   </>
+          <div style={{ height: '80px' }} />
         )}
+
         {uploadMutation.isLoading && <LoadingOutlined />}
       </div>
     </div>

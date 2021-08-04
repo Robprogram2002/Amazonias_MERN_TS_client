@@ -3,50 +3,98 @@ import Center from '@components/Layout/Containers/Center';
 import AdminSubmit from '@components/UI/Butons/AdminSubmit';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { useMutation, useQuery } from 'react-query';
-import { fetchDepartments } from 'api/products/departments';
+import { useMutation } from 'react-query';
 import onErrorHandler from 'api/authentication/onErrorHandler';
-import { addCategory, updateCategory } from 'api/products/categories';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { ImageBanner } from 'types/others';
+import { addProduct } from 'api/products/products';
+import { EditorState, convertToRaw } from 'draft-js';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import styles from './CreateDepartmentForm.module.scss';
-import InputField from '../Fields/InputField';
-import TextareaField from '../Fields/TextareaField';
-import ImageUpload from '../Fields/ImageUpload';
-import SelectField from '../Fields/SelectField';
+import 'jodit/build/jodit.min.css';
+import ProductDetails from '../products/ProductDetails';
+import ProductGeneral from '../products/ProductGenral';
+import ProductInventory from '../products/ProductInventory';
+import ProductFeatures from '../products/ProductFeatures';
+import ProductDescription from '../products/ProductDescription';
+import ProductImages from '../products/ProductImages';
 
 const schema = Yup.object({
-  name: Yup.string()
+  title: Yup.string()
     .trim()
     .required('name is required')
     .min(4, 'name must be at least 4 characters')
     .max(70, 'too long name'),
-  description: Yup.string()
-    .trim()
-    .required('description is required')
-    .min(50, 'description must be at least 50 characters'),
   departmentId: Yup.string().trim().required('is required select a department'),
+  categoryId: Yup.string().trim().required('is required select a department'),
+  currency: Yup.string().trim().required('is required select a currency'),
+  sku: Yup.string().trim().required('is required select a currency'),
+  condition: Yup.string().trim().required('is required select a currency'),
+  state: Yup.string().trim().required('is required select a currency'),
+  brand: Yup.string().trim().required('is required select a currency'),
+  availability: Yup.string().trim().required('is required select a currency'),
+  basePrice: Yup.number().min(0).required('product price is required'),
+  stock: Yup.number().min(0).required('product stock is required'),
+  features: Yup.array(Yup.string()).required(),
+  subs: Yup.array(Yup.string()).required(),
+  specifications: Yup.array(
+    new Yup.ObjectSchema({
+      name: Yup.string().required(),
+      value: Yup.string().required(),
+    })
+  ).required(),
+  details: Yup.string().required(),
+  images: Yup.array(
+    new Yup.ObjectSchema({
+      publicId: Yup.string().required(),
+      url: Yup.string().required(),
+    })
+  ),
 });
 
-const CreateProductForm = ({
-  type,
-  product,
-}: {
-  type: string;
-  product: any;
-}) => {
+const initialValues = {
+  title: '',
+  departmentId: '',
+  categoryId: '',
+  currency: '',
+  sku: '',
+  condition: '',
+  state: '',
+  brand: '',
+  availability: '',
+  basePrice: 0.0,
+  stock: 0,
+  features: [''],
+  subs: [''],
+  specifications: [{ name: '', value: '' }],
+  details: '',
+  images: [],
+};
+
+const menuKeys = [
+  'general',
+  'inventory',
+  'features',
+  'description',
+  'details',
+  'images',
+];
+
+const CreateProductForm = ({ type }: { type: string }) => {
   const [images, setImages] = useState<ImageBanner[]>([]);
-  const [bannersError, setBannersError] = useState<string | null>(null);
-  const router = useRouter();
+  const [editorDesc, setEditorDesc] = useState(EditorState.createEmpty());
+  const [menuKey, setMenuKey] = useState('general');
+
+  // const router = useRouter();
   console.log(type);
 
-  const { isLoading, mutate } = useMutation('addCategory', addCategory, {
+  const { isLoading, mutate } = useMutation('addProduct', addProduct, {
     onSuccess: ({ data, status }) => {
       if (status === 200) {
-        toast.success(`Category ${data.name} was created succesfully`);
+        toast.success(`Product ${data.title} was created succesfully`);
         setImages([]);
-        setBannersError(null);
+        setEditorDesc(EditorState.createEmpty());
       }
     },
     onError: (error) => {
@@ -54,135 +102,93 @@ const CreateProductForm = ({
     },
   });
 
-  const departments = useQuery('fetch-departments', fetchDepartments, {
-    onError: (err) => {
-      onErrorHandler(err);
-    },
-  });
-
-  const update = useMutation('updateSubCategory', updateCategory, {
-    onSuccess: ({ status }) => {
-      if (status === 200) {
-        router.push('/admin/categories/list');
-        toast.success(`Category was updated succesfully`);
-      }
-    },
-    onError: (error) => {
-      onErrorHandler(error);
-    },
-  });
+  // const createMarkup = (html: any) => ({
+  //   __html: DOMPurify.sanitize(html),
+  // });
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        width: '100%',
-        height: 'auto',
-      }}
-    >
-      <div className={styles.Container}>
-        <Formik
-          initialValues={{
-            name: product?.name || '',
-            description: product?.description || '',
-            departmentId: product?.departmentId || '',
-          }}
-          validateOnBlur
-          validateOnChange
-          validationSchema={schema}
-          onSubmit={async (values, actions) => {
-            if (images.length !== 4) {
-              setBannersError('Departments must have 4 banner images');
-              return actions.resetForm({
-                values,
-              });
-            }
-            if (product) {
-              return update.mutate({
-                ...values,
-                slug: product.slug,
-                banners: images,
-              });
-            }
-            mutate({
-              ...values,
-              banners: images,
-              slug: null,
-            });
-            return actions.resetForm();
-          }}
-        >
-          {({ handleSubmit, isValid, errors, touched, values }) => (
-            <Form role="form" autoComplete="Off" onSubmit={handleSubmit}>
-              <div className={styles.Column}>
-                <ImageUpload
-                  label="Image Banners  (Four required)"
-                  handler={setImages}
-                  images={images}
-                />
+    <div className={styles.Container}>
+      <Formik
+        initialValues={initialValues}
+        validateOnBlur
+        validateOnChange
+        validationSchema={schema}
+        onSubmit={async (values, actions) => {
+          if (images.length <= 0) {
+            toast.error('Product must have at least one image');
+            return actions.resetForm({ values });
+          }
+          if (editorDesc === EditorState.createEmpty()) {
+            toast.error('Product description must not be empty');
+            return actions.resetForm({ values });
+          }
 
-                {bannersError && (
-                  <span className={styles.ErrorMessege}> {bannersError} </span>
-                )}
+          mutate({
+            ...values,
+            slug: null,
+            type,
+            images,
+            description: convertToRaw(editorDesc.getCurrentContent()),
+          });
 
-                <InputField
-                  name="name"
-                  error={!!(errors.name && touched.name)}
-                  label="Name"
-                  placeholder="Type here ..."
-                  type="text"
-                />
-
-                {errors.name && touched.name ? null : (
-                  <div style={{ height: '20px' }} />
-                )}
-
-                <TextareaField
-                  name="description"
-                  error={!!(errors.description && touched.description)}
-                  label="Description"
-                  placeholder="Type here ..."
-                />
-
-                {errors.description && touched.description ? null : (
-                  <div style={{ height: '20px' }} />
-                )}
-
-                <SelectField
-                  name="departmentId"
-                  error={!!(errors.departmentId && touched.departmentId)}
-                  label="Department"
-                  loading={departments.isLoading}
-                  options={
-                    departments.data?.data.map((element: any) => ({
-                      id: element._id,
-                      name: element.name,
-                    })) || null
-                  }
-                />
-
-                <div style={{ height: '30px' }} />
-
-                <Center>
-                  <AdminSubmit
-                    update={product !== null}
-                    loading={isLoading}
-                    disabled={
-                      !(
-                        isValid &&
-                        values.name !== '' &&
-                        values.description !== '' &&
-                        values.departmentId !== ''
-                      )
+          return actions.resetForm({ values });
+        }}
+      >
+        {({ handleSubmit, isValid, values }) => (
+          <Form role="form" autoComplete="Off" onSubmit={handleSubmit}>
+            <div className={styles.Grid}>
+              <div className={styles.SideBar}>
+                {menuKeys.map((key) => (
+                  <button
+                    type="button"
+                    key={key}
+                    className={
+                      menuKey === key ? styles.ActiveMenuItem : styles.MenuItem
                     }
-                  />
-                </Center>
+                    onClick={() => {
+                      setMenuKey(key);
+                    }}
+                  >
+                    {key.toUpperCase()}
+                  </button>
+                ))}
               </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+
+              <ProductGeneral menuKey={menuKey} />
+
+              <ProductImages
+                menuKey={menuKey}
+                setImages={setImages}
+                images={images}
+              />
+
+              <ProductDescription menuKey={menuKey} handler={setEditorDesc} />
+
+              <ProductDetails menuKey={menuKey} />
+
+              <ProductInventory menuKey={menuKey} />
+
+              <ProductFeatures menuKey={menuKey} />
+            </div>
+
+            <div style={{ height: '30px' }} />
+
+            <Center>
+              <AdminSubmit
+                update={false}
+                loading={isLoading}
+                disabled={
+                  !(
+                    isValid &&
+                    values.title !== '' &&
+                    values.departmentId !== ''
+                  )
+                }
+              />
+            </Center>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

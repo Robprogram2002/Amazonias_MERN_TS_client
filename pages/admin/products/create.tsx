@@ -9,12 +9,12 @@ const ProductsCreatePage = () => {
   return (
     <AdminMenu selectedKey="products" openKey="products/create">
       <ProductHead
-        width="550px"
+        width="90%"
         title="Add new category"
         update={false}
         setSelectOption={setProductOption}
       />
-      <CreateProductForm type={productOption} product={null} />
+      <CreateProductForm type={productOption} />
       <div style={{ height: '30px' }} />
     </AdminMenu>
   );

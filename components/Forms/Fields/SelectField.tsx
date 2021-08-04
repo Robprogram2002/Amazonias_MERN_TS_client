@@ -16,7 +16,7 @@ const SelectField = ({
   options,
   loading,
 }: SelectFieldProps) => (
-  <>
+  <div>
     <label className={styles.Label} htmlFor={name}>
       {label}
     </label>
@@ -28,7 +28,10 @@ const SelectField = ({
         </option>
         {options &&
           options.map((element) => (
-            <option value={element.id}> {element.name} </option>
+            <option value={element.id} key={element.id}>
+              {' '}
+              {element.name}{' '}
+            </option>
           ))}
       </Field>
     </div>
@@ -37,7 +40,7 @@ const SelectField = ({
       component="span"
       className={styles.ErrorMessege}
     />
-  </>
+  </div>
 );
 
 export default SelectField;

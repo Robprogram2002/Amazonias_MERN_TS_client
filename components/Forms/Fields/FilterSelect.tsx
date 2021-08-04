@@ -22,7 +22,9 @@ const FilterSelect = ({
         )}
         {options &&
           options.map((element) => (
-            <option value={element.id}> {element.name} </option>
+            <option value={element.id} key={element.id}>
+              {element.name}
+            </option>
           ))}
       </select>
     </div>

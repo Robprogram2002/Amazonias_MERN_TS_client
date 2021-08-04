@@ -11,6 +11,9 @@ export const fetchSubCategories = () => axios.get('/sub-categories/list');
 export const fetchOneSubCategory = (slug: string | string[]) =>
   axios.get(`/sub-categories/list/${slug}`);
 
+export const fetchSubsByCategory = (categoryId: string) =>
+  axios.get(`/sub-categories/list/by-category/${categoryId}`);
+
 export const addSubCategory = (data: SubCategoryPayload) =>
   axios.post('/sub-categories/create', { ...data });
 

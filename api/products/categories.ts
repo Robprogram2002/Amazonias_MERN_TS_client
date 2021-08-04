@@ -13,6 +13,9 @@ export const fetchCategories = () => axios.get('/categories/list');
 export const fetchOneCategory = (slug: string | string[]) =>
   axios.get(`/categories/list/${slug}`);
 
+export const fetchCategoriesByDepartment = (departmentId: string) =>
+  axios.get(`/categories/list/by-department/${departmentId}`);
+
 export const addCategory = (data: CategoryPayload) =>
   axios.post('/categories/create', { ...data });
 
