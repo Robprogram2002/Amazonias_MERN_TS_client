@@ -2,35 +2,39 @@ import { useMutation, useQuery } from 'react-query';
 import { DashOutlined, Loading3QuartersOutlined } from '@ant-design/icons';
 import onErrorHandler from 'api/authentication/onErrorHandler';
 import SimpleIcon from '@components/UI/Icons/SimpleIcon';
-import { filterByText, removeCategory } from 'api/products/categories';
-import { ICategory } from 'types/Category';
+import { fetchCategoriesByDepartment } from 'api/products/categories';
 import { fetchDepartments } from 'api/products/departments';
 import FilterSelect from '@components/Forms/Fields/FilterSelect';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { filterProducts, removeProduct } from '@api/products/products';
+import { fetchSubsByCategory } from '@api/products/subCategories';
+import Avatar from 'antd/lib/avatar/avatar';
+import { IProduct } from '../../../types/Product';
 import Table from './Table';
 import styles from './DepartmentList.module.scss';
 
 const MySwal = withReactContent(Swal);
 
-const CategoryList = () => {
-  const [categories, setCategories] = useState<ICategory[] | null>(null);
-  const [selectOption, setSelectOption] = useState('');
+const ProductList = () => {
+  const [products, setProducts] = useState<IProduct[] | null>(null);
+  const [department, setDepartment] = useState('');
+  const [category, setCategory] = useState('');
+  const [subcategory, setSubcategory] = useState('');
   const [value, setValue] = useState('');
   const [timer, setTimer] = useState<any | null>(null);
   const [openEdit, setOpenEdit] = useState<string | null>(null);
   const router = useRouter();
 
   const { isLoading, refetch } = useQuery(
-    ['filter-categories', value, selectOption],
-    () => filterByText(value, selectOption),
+    ['filter-products', value, department, category, subcategory],
+    () => filterProducts(value, department, category, subcategory),
     {
       onSuccess: ({ status, data }) => {
         if (status === 200) {
-          setCategories(data);
-          console.log(data);
+          setProducts(data);
         }
       },
       onError: (error) => {
@@ -45,11 +49,26 @@ const CategoryList = () => {
     },
   });
 
-  const mutation = useMutation('delete-category', removeCategory, {
+  const categories = useQuery(
+    ['fetch-categories', department],
+    () => fetchCategoriesByDepartment(department),
+    {
+      enabled: department !== '',
+    }
+  );
+
+  const subcategories = useQuery(
+    ['fetch-subcategories', category],
+    () => fetchSubsByCategory(category),
+    {
+      enabled: category !== '',
+    }
+  );
+
+  const mutation = useMutation('delete-product', removeProduct, {
     onSuccess: ({ status }) => {
       if (status === 200) {
-        // toast.success('the sub-category was deleted');
-        MySwal.fire('Deleted!', 'The category has been deleted.', 'success');
+        MySwal.fire('Deleted!', 'The product has been deleted.', 'success');
         refetch();
       }
     },
@@ -77,10 +96,10 @@ const CategoryList = () => {
 
   useEffect(() => {
     refetch();
-  }, [selectOption]);
+  }, [department, category, subcategory]);
 
   const pushEdit = (slug: string) => {
-    router.push(`/admin/categories/edit/${slug}`);
+    router.push(`/admin/products/edit/${slug}`);
   };
 
   const deleteHandler = (id: string) => {
@@ -93,7 +112,7 @@ const CategoryList = () => {
         <div className={styles.SearchContainer} style={{ width: '400px' }}>
           <input
             type="text"
-            placeholder="Filter ..."
+            placeholder="Filter by name ..."
             onChange={(e) => setValue(e.target.value)}
             value={value}
           />
@@ -103,7 +122,11 @@ const CategoryList = () => {
         <div style={{ width: '200px' }}>
           <FilterSelect
             handler={(e: ChangeEvent<HTMLInputElement>) => {
-              setSelectOption(e.target.value);
+              if (e.target.value === '') {
+                setCategory('');
+                setSubcategory('');
+              }
+              setDepartment(e.target.value);
             }}
             loading={departments.isLoading}
             placeholder="All departments"
@@ -115,37 +138,95 @@ const CategoryList = () => {
             }
           />
         </div>
+
+        <div style={{ width: '200px' }}>
+          <FilterSelect
+            handler={(e: ChangeEvent<HTMLInputElement>) => {
+              if (e.target.value === '') {
+                setSubcategory('');
+              }
+              setCategory(e.target.value);
+            }}
+            loading={categories.isLoading}
+            placeholder="All categories"
+            options={
+              categories.data?.data.map((element: any) => ({
+                id: element._id,
+                name: element.name,
+              })) || null
+            }
+          />
+        </div>
+
+        <div style={{ width: '200px' }}>
+          <FilterSelect
+            handler={(e: ChangeEvent<HTMLInputElement>) => {
+              setSubcategory(e.target.value);
+            }}
+            loading={departments.isLoading}
+            placeholder="All subcategories"
+            options={
+              subcategories.data?.data.map((element: any) => ({
+                id: element._id,
+                name: element.name,
+              })) || null
+            }
+          />
+        </div>
       </div>
       <Table>
         <thead>
           <tr>
             <th>Select</th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Slug</th>
-            <th>Order</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Type</th>
+            <th>State</th>
+            <th> Availability </th>
             <th> Department </th>
+            <th> Category </th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {categories &&
-            categories.map((category: ICategory) => (
-              <tr key={category._id}>
+          {products &&
+            products.map((product) => (
+              <tr key={product._id}>
                 <td>
                   <div>
                     <input type="checkbox" value="" />
                   </div>
                 </td>
-                <td> {category._id} </td>
                 <td>
-                  <b> {category.name} </b>
+                  <Avatar
+                    src={
+                      product.type === 'simple'
+                        ? product.images[0].url
+                        : product.productVariants![0].images[0].url
+                    }
+                    size={80}
+                    shape="square"
+                  />
                 </td>
-                <td> {`${category.description.substring(0, 40)}  ...`} </td>
-                <td> {category.slug} </td>
-                <td> 30 </td>
-                <td> {category.department[0].name} </td>
+                <td>
+                  <b> {product.title.substring(0, 40)} </b>
+                </td>
+                <td>
+                  {`${
+                    product.basePrice || product.productVariants![0].basePrice
+                  } ${
+                    product.currency || product.productVariants![0].currency
+                  }`}
+                </td>
+                <td> {product.type} </td>
+                <td> {product.state || product.productVariants![0].state} </td>
+                <td>
+                  {product.availability ||
+                    product.productVariants![0].availability}
+                </td>
+                <td> {product.department![0].name.substring(0, 40)} </td>
+                <td> {product.category![0].name.substring(0, 40)} </td>
                 <td>
                   <div className={styles.EditButton}>
                     <SimpleIcon
@@ -157,16 +238,16 @@ const CategoryList = () => {
                       }
                       outline
                       handler={() => {
-                        if (openEdit === category._id) {
+                        if (openEdit === product._id) {
                           setOpenEdit(null);
                         } else {
-                          setOpenEdit(category._id);
+                          setOpenEdit(product._id);
                         }
                       }}
                     />
                     <div
                       className={
-                        openEdit === category._id
+                        openEdit === product._id
                           ? styles.FloatCardActive
                           : styles.FloatCard
                       }
@@ -177,7 +258,7 @@ const CategoryList = () => {
                       <button
                         type="button"
                         className={styles.EditRow}
-                        onClick={() => pushEdit(category.slug)}
+                        onClick={() => pushEdit(product.slug)}
                       >
                         <span> Edit category </span>
                       </button>
@@ -196,7 +277,7 @@ const CategoryList = () => {
                             confirmButtonText: 'Yes, delete it!',
                           }).then((result) => {
                             if (result.isConfirmed) {
-                              deleteHandler(category._id);
+                              deleteHandler(product._id);
                             }
                           });
                         }}
@@ -216,4 +297,4 @@ const CategoryList = () => {
   );
 };
 
-export default CategoryList;
+export default ProductList;

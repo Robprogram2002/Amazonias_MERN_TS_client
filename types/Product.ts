@@ -1,4 +1,31 @@
+import { ICategory } from './Category';
+import { IDepartment } from './Department';
+
+interface IVariant {
+  basePrice: number;
+  currency: string;
+  sku: string;
+  stock: number;
+  sold: number;
+  images: {
+    publicId: string;
+    url: string;
+  }[];
+  sale: {
+    onSale: boolean;
+    saleAmount: number;
+    expiry: Date;
+  };
+  availability: string;
+  state: string;
+  condition: string;
+  productId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IProduct {
+  _id: string;
   title: string;
   slug: string;
   type: string;
@@ -21,7 +48,7 @@ export interface IProduct {
     saleAmount: number;
     expiry: Date;
   };
-  depaartmentId: any;
+  departmentId: any;
   categoryId: any;
   subs: any[];
   availability: string;
@@ -29,10 +56,19 @@ export interface IProduct {
   condition: string;
   brand: string;
   details: string;
+  variants:
+    | {
+        name: string;
+        options: string[];
+      }[]
+    | null;
+  productVariants: IVariant[] | null;
   ratings: {
     star: number;
     postedBy: any;
   }[];
+  department: IDepartment[] | null;
+  category: ICategory[] | null;
   questions: any[];
   comments: any[];
   createdAt: Date;

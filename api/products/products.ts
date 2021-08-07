@@ -1,28 +1,54 @@
 import axios from 'axios';
 
-interface ProductPayload {
+interface BaseProduct {
   title: string;
   slug: string | null;
   type: string;
-  basePrice: number;
-  currency: string;
   description: any;
-  sku: string;
-  stock: number;
   specifications: any[];
-  images: {
-    publicId: string;
-    url: string;
-  }[];
   features: string[];
   departmentId: string;
   categoryId: string;
   subs: string[];
+  brand: string;
+  details: string;
+}
+
+interface ProductPayload extends BaseProduct {
+  basePrice: number;
+  currency: string;
+  sku: string;
+  stock: number;
+  images: {
+    publicId: string;
+    url: string;
+  }[];
   availability: string;
   state: string;
   condition: string;
-  brand: string;
-  details: string;
+}
+
+export interface Variant {
+  basePrice: number;
+  currency: string;
+  sku: string;
+  stock: number;
+  images: {
+    publicId: string;
+    url: string;
+  }[];
+  availability: string;
+  state: string;
+  condition: string;
+  options: string[];
+}
+
+interface ProductVariantPayload extends BaseProduct {
+  productVariants: Variant[];
+  variants: {
+    name: string;
+    options: string[];
+  }[];
 }
 
 export const fetchProducts = () => axios.get('/products/list');
@@ -30,8 +56,24 @@ export const fetchProducts = () => axios.get('/products/list');
 export const fetchOneProduct = (slug: string | string[]) =>
   axios.get(`/products/list/${slug}`);
 
+export const filterProducts = (
+  text: string,
+  department: string,
+  category: string,
+  subcategory: string
+) =>
+  axios.post('/products/admin/filter', {
+    text,
+    department,
+    category,
+    subcategory,
+  });
+
 export const addProduct = (data: ProductPayload) =>
   axios.post('/products/create', { ...data });
+
+export const addProductVariants = (data: ProductVariantPayload) =>
+  axios.post('/products/create-variants', { ...data });
 
 export const updateProduct = (data: ProductPayload) =>
   axios.patch(`/products/update/${data.slug}`, { ...data });
