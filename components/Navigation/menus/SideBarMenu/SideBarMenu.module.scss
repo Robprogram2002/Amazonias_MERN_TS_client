@@ -1,0 +1,141 @@
+@import '../../../../styles/constants.scss';
+
+.MenuItem {
+  height: 98%;
+  color: $whiteGray;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin: 0px 6px;
+
+  span {
+    margin: 0px 6px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  &:hover {
+    border: 1px solid $whiteGray;
+  }
+}
+
+.BlackBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $mainBlack;
+  opacity: 0.8;
+  z-index: 1000;
+}
+
+.SideContainer {
+  z-index: 10001;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 340px;
+  background-color: white;
+
+  .Header {
+    background-color: $darkBlue;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 1.6rem;
+    height: 8vh;
+    position: relative;
+
+    .Close {
+      position: absolute;
+      color: white;
+      top: 0.6rem;
+      right: -3rem;
+      cursor: pointer;
+    }
+
+    h2 {
+      color: white;
+      padding: 0;
+      margin: 0;
+      margin-left: 1rem;
+    }
+  }
+
+  .SideBar {
+    height: 92vh;
+    overflow: auto;
+    width: 100%;
+
+    h1 {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 1rem;
+      padding-left: 2rem;
+      padding-right: 0.5rem;
+      padding-bottom: 0;
+    }
+
+    .Back {
+      width: 100%;
+      padding: 0.7rem 1.6rem;
+      color: $mainBlack;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      border-bottom: 1px solid $gray;
+
+      h3 {
+        padding: 0;
+        margin: 0;
+        margin-left: 1rem;
+      }
+
+      svg {
+        color: $strongGray;
+      }
+
+      &:hover {
+        background-color: $secondGray;
+        font-weight: bold;
+
+        svg {
+          color: $mainBlack;
+        }
+      }
+    }
+
+    .Item {
+      width: 100%;
+      padding: 0.7rem;
+      padding-left: 2rem;
+      padding-right: 0.5rem;
+      color: $mainBlack;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      svg {
+        color: $strongGray;
+      }
+
+      &:hover {
+        background-color: $secondGray;
+        font-weight: bold;
+
+        svg {
+          color: $mainBlack;
+        }
+      }
+    }
+  }
+}

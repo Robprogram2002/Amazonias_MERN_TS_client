@@ -1,0 +1,164 @@
+@import '../../../../styles/constants.scss';
+
+.MenuContainer {
+  display: grid;
+  grid-template-columns: 20% 50% 30%;
+  grid-template-rows: 40px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
+  padding: 0.6rem 1rem;
+  background-color: $blackBlue;
+}
+
+.LogoContainer {
+  height: 100%;
+  width: 160px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  .Logo {
+    color: $yellow;
+    font-family: cursive;
+    font-size: 1.8rem;
+    font-style: italic;
+    text-decoration: underline;
+  }
+
+  &:hover {
+    border: 1px solid $whiteGray;
+  }
+}
+
+.SearchContainer {
+  margin-right: 1.5rem;
+  height: 85%;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  overflow: hidden;
+
+  .SearchInput {
+    height: 100%;
+    width: 88%;
+    outline: none;
+    border: none;
+    border-radius: 0px;
+  }
+
+  .SearchIcon {
+    height: 100%;
+    width: 12%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $blackBlue;
+    font-size: 20px;
+    padding: 0px 1rem;
+    background-color: $yellow;
+
+    &:hover {
+      cursor: pointer;
+      font-weight: bold;
+      opacity: 0.95;
+    }
+  }
+}
+
+.RightsContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+
+  .CartContainer {
+    height: 100%;
+    color: $whiteGray;
+    display: flex;
+    align-items: flex-end;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    position: relative;
+
+    span {
+      margin: 0px 5px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .CartCount {
+      position: absolute;
+      background-color: $yellow;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 25px;
+      height: 25px;
+      border-radius: 25px;
+      color: black;
+      top: -0.2rem;
+      right: 2rem;
+    }
+
+    &:hover {
+      border: 1px solid $whiteGray;
+    }
+  }
+}
+
+.TextContent {
+  height: 96%;
+  max-height: 100%;
+  color: $whiteGray;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+  margin: 0px 6px;
+  font-weight: 550;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid $whiteGray;
+  }
+}
+
+.MenuItem {
+  height: 98%;
+  color: $whiteGray;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin: 0px 6px;
+
+  span {
+    margin: 0px 6px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  &:hover {
+    border: 1px solid $whiteGray;
+  }
+}
+
+.SubMenuConatiner {
+  height: 45px;
+  background-color: $darkBlue;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.2rem 1rem;
+  color: $whiteGray;
+}
