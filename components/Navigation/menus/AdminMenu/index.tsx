@@ -134,6 +134,34 @@ const AdminMenu: FC<{ selectedKey: string; openKey: string | null }> = ({
               Sub-categories List
             </Menu.Item>
           </SubMenu>
+          <SubMenu key="brands" icon={<ContainerOutlined />} title="Brands">
+            <Menu.Item
+              key="brands/create"
+              onClick={() => router.push('/admin/brands/create')}
+            >
+              Add Brand
+            </Menu.Item>
+            <Menu.Item
+              key="brands/list"
+              onClick={() => router.push('/admin/brands/list')}
+            >
+              Brands List
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu key="vendors" icon={<ContainerOutlined />} title="Vendors">
+            <Menu.Item
+              key="vendors/create"
+              onClick={() => router.push('/admin/vendors/create')}
+            >
+              Add Vendor
+            </Menu.Item>
+            <Menu.Item
+              key="vendors/list"
+              onClick={() => router.push('/admin/vendors/list')}
+            >
+              Vendors List
+            </Menu.Item>
+          </SubMenu>
 
           <Menu.Item
             key="orders"
@@ -156,20 +184,7 @@ const AdminMenu: FC<{ selectedKey: string; openKey: string | null }> = ({
           >
             Reviews
           </Menu.Item>
-          <SubMenu key="sellers" icon={<ContainerOutlined />} title="Sellers">
-            <Menu.Item
-              key="sellers/create"
-              onClick={() => router.push('/admin/sellers/create')}
-            >
-              Add seller
-            </Menu.Item>
-            <Menu.Item
-              key="sellers/list"
-              onClick={() => router.push('/admin/sellers/list')}
-            >
-              Seller List
-            </Menu.Item>
-          </SubMenu>
+
           <Menu.Item
             key="sales"
             icon={<ContainerOutlined />}

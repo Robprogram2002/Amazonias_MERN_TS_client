@@ -14,7 +14,6 @@
   margin: 0px 6px;
   font-weight: 550;
   position: relative;
-  cursor: pointer;
 
   &:hover {
     border: 1px solid $whiteGray;
@@ -61,11 +60,20 @@
       font-size: 0.9rem;
       font-weight: normal;
       padding: 4px;
+      cursor: pointer;
+    }
 
-      &:hover {
-        color: $yellow;
-        font-weight: bold;
-      }
+    .DepartmentItemActive {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: normal;
+      padding: 4px;
+      color: $yellow;
+      font-weight: bold;
+      cursor: pointer;
     }
   }
 
@@ -93,6 +101,7 @@
       font-size: 0.9rem;
       font-weight: normal;
       padding: 4px;
+      cursor: pointer;
 
       &:hover {
         font-weight: bold;

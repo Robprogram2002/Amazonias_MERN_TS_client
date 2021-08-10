@@ -29,6 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
   const authRoutes = ['/auth/login'];
   const isAuthRoute = authRoutes.includes(pathname);
+  const isAdminRoute = pathname.includes('/admin/');
 
   return (
     <>
@@ -36,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <AuthProvider>
-          {!isAuthRoute && <StoreMenu />}
+          {!isAuthRoute && !isAdminRoute && <StoreMenu />}
           <Component {...pageProps} />
         </AuthProvider>
       </QueryClientProvider>

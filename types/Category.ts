@@ -1,3 +1,5 @@
+import { ISubCategory } from './SubCategory';
+
 export interface ICategory {
   _id: string;
   name: string;
@@ -8,4 +10,8 @@ export interface ICategory {
   description: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface CategorySubs extends ICategory {
+  subs: ISubCategory[];
 }

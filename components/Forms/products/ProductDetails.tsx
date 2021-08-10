@@ -3,7 +3,13 @@ import Column from '@components/Layout/Containers/Column';
 import { useRef, useEffect, ChangeEvent, useState } from 'react';
 import { useFormikContext } from 'formik';
 
-const ProductDetails = ({ menuKey }: { menuKey: string }) => {
+const ProductDetails = ({
+  menuKey,
+  title,
+}: {
+  menuKey: string;
+  title: string;
+}) => {
   const editorRef = useRef<any>();
   const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
@@ -11,7 +17,6 @@ const ProductDetails = ({ menuKey }: { menuKey: string }) => {
     values: { details },
     setFieldValue,
   } = useFormikContext<{
-    title: string;
     departmentId: string;
     categoryId: string;
     currency: string;
@@ -29,7 +34,7 @@ const ProductDetails = ({ menuKey }: { menuKey: string }) => {
   if (menuKey === 'details') {
     return (
       <Column>
-        <h2>Details About The Product </h2>
+        <h2> {title} </h2>
 
         {isEditorLoaded && (
           <CKEditor

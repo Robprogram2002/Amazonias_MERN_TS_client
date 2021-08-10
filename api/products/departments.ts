@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { DepartmentsMenu } from '../../types/Department';
 
 interface DepartmentPayload {
   name: string;
@@ -11,6 +12,14 @@ export const fetchDepartments = () => axios.get('/departments/list');
 
 export const fetchOneDepartment = (slug: string | string[]) =>
   axios.get(`/departments/list/${slug}`);
+
+export const fetchMenuData = async () => {
+  const { data } = await axios.get<DepartmentsMenu[]>(
+    '/departments/menu-data-two'
+  );
+
+  return data;
+};
 
 export const addDepartment = (data: DepartmentPayload) =>
   axios.post('/departments/create', { ...data });

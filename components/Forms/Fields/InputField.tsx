@@ -17,9 +17,11 @@ const InputField = ({
   label,
 }: InputFieldProps) => (
   <div>
-    <label className={styles.Label} htmlFor={name}>
-      {label}
-    </label>
+    {label !== '' && (
+      <label className={styles.Label} htmlFor={name}>
+        {label}
+      </label>
+    )}
     <div className={error ? styles.FieldContainerError : styles.FieldContainer}>
       <Field
         type={type}

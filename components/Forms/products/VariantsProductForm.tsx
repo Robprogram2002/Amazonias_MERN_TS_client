@@ -151,7 +151,10 @@ const VariantsProductForm = () => {
 
               <ProductDescription menuKey={menuKey} handler={setEditorDesc} />
 
-              <ProductDetails menuKey={menuKey} />
+              <ProductDetails
+                title="Details About The Product"
+                menuKey={menuKey}
+              />
 
               <ProductFeatures menuKey={menuKey} />
 

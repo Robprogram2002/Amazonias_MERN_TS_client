@@ -1,0 +1,191 @@
+@import '../../../styles/constants.scss';
+
+.Container {
+  width: 98%;
+  height: 400px;
+  background-color: white;
+  border-radius: 6px;
+  margin: 1rem;
+  overflow: hidden;
+
+  .HeaderContainer {
+    height: 60%;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid $gray;
+
+    .Background {
+      width: 100%;
+      position: relative;
+      top: 0;
+      left: 0;
+      background-color: $secondBlue;
+      height: 50%;
+    }
+
+    img {
+      position: absolute;
+      top: 2.7rem;
+      left: 2rem;
+      width: 180px;
+      height: 165px;
+      object-fit: cover;
+      border-radius: 6px;
+      z-index: 400;
+    }
+
+    .HeaderContent {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 25% 50% 25%;
+      grid-template-rows: 1fr;
+      height: 50%;
+      padding: 0rem 1rem;
+
+      h2 {
+        color: $mainBlack;
+        font-size: 1.8rem;
+        font-weight: bold;
+        padding: 0;
+        margin: 0;
+        margin-top: 0.5rem;
+      }
+
+      p {
+        margin-top: 0.4rem;
+        color: $mainBlack;
+        font-size: 1rem;
+        font-weight: normal;
+      }
+
+      .ButtonsContainer {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        button {
+          padding: 8px 14px;
+          font-size: 1rem;
+          color: $mainBlack;
+          border: 1px solid $strongGray;
+          outline: none;
+          background-color: transparent;
+          cursor: pointer;
+
+          .Icon {
+            color: $mainBlack;
+            margin-right: 6px;
+          }
+
+          &:hover {
+            color: $secondBlue;
+            border: 1px solid $secondBlue;
+            .Icon {
+              color: $secondBlue;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .Bottom {
+    height: 50%;
+    width: 100%;
+    padding: 0rem 1rem;
+    display: grid;
+    grid-template-columns: 74% 26%;
+
+    .TextContent {
+      display: grid;
+      grid-template-columns: 26% 37% 37%;
+      height: 100%;
+
+      .SalesContainer {
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+
+        .Sales {
+          border: 1px solid $gray;
+          border-radius: 6px;
+          padding: 0.5rem;
+
+          .Item {
+            p {
+              color: $strongGray;
+              font-weight: bold;
+              font-size: 0.9rem;
+              margin: 0;
+              padding: 0;
+            }
+
+            span {
+              color: $yellow;
+              font-weight: bold;
+              margin-left: 0.3rem;
+              font-size: 1.3rem;
+            }
+          }
+        }
+      }
+
+      .TextList {
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+
+        h3 {
+          font-weight: bold;
+          font-size: 1rem;
+        }
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+.ProductsContainer {
+  width: 98%;
+  background-color: white;
+  border-radius: 6px;
+  margin: 1rem;
+  overflow: hidden;
+  padding: 1rem;
+
+  .GridContainer {
+    margin-top: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 300px;
+    column-gap: 1rem;
+    row-gap: 1.6rem;
+
+    .ProductCard {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 6px;
+      border: 1px solid $gray;
+      overflow: hidden;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .Bottom {
+        height: 100px;
+        width: 100%;
+        padding: 0.6rem;
+      }
+    }
+  }
+}

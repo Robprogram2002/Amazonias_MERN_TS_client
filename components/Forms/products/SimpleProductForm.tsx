@@ -153,7 +153,10 @@ const SimpleProductForm = () => {
 
             <ProductDescription menuKey={menuKey} handler={setEditorDesc} />
 
-            <ProductDetails menuKey={menuKey} />
+            <ProductDetails
+              menuKey={menuKey}
+              title="Details About The Product"
+            />
 
             <ProductInventory menuKey={menuKey} />
 

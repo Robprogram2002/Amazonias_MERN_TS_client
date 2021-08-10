@@ -1,19 +1,26 @@
 import { useState } from 'react';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { RiArrowRightSLine } from 'react-icons/ri';
+import { CategorySubs } from '../../../../types/Category';
+import { DepartmentsMenu } from '../../../../types/Department';
 import styles from './DropDownTwo.module.scss';
 
-const DropDownTwo = () => {
+const DropDownTwo = ({ data }: { data: DepartmentsMenu[] | null }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] =
+    useState<DepartmentsMenu | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategorySubs | null>(
+    null
+  );
 
   return (
     <>
-      {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
       <div
         className={styles.TextContent}
         onClick={() => setIsOpen((prev) => !prev)}
         onKeyDown={() => setIsOpen((prev) => !prev)}
         role="menu"
+        tabIndex={0}
       >
         <span>All the </span>
         <strong>
@@ -24,119 +31,61 @@ const DropDownTwo = () => {
           style={{ display: isOpen ? 'flex' : 'none' }}
         >
           <div className={styles.DepartmentList}>
-            <span className={styles.DepartmentItem}>
-              Amazon Prime Video
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Echo y Alexa
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
+            {data &&
+              data.map((department) => (
+                <span
+                  className={
+                    selectedDepartment?._id === department._id
+                      ? styles.DepartmentItemActive
+                      : styles.DepartmentItem
+                  }
+                  key={department._id}
+                  onMouseEnter={() => {
+                    setSelectedDepartment(department);
+                    setSelectedCategory(null);
+                  }}
+                >
+                  {department.name}
+                  <RiArrowRightSLine />
+                </span>
+              ))}
           </div>
-          <div className={styles.CategoryList}>
-            <h3>Amazon Prime Video</h3>
+          {selectedDepartment && (
+            <div className={styles.CategoryList}>
+              <h3> {selectedDepartment?.name} </h3>
 
-            <span className={styles.CategoryItem}>
-              Laptops
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.CategoryItem}>
-              Tablets
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.CategoryItem}>
-              Computadoras de escritorio
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.CategoryItem}>
-              Computadoras de escritorio
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.CategoryItem}>
-              Computadoras de escritorio
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.CategoryItem}>
-              Computadoras de escritorio
-              <RiArrowRightSLine />
-            </span>
-          </div>
-          <div className={styles.BigBanner}>
-            <img
-              src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628303896/amazonias/giu-vicente-FMArg2k3qOU-unsplash.jpg/1628303893253.jpg"
-              alt="ajksndjs sajdjk"
-            />
-          </div>
-          <div className={styles.BannersContainer}>
-            <div className={styles.Banner}>
+              {selectedDepartment &&
+                selectedDepartment.categories.map((category) => (
+                  <span
+                    className={styles.CategoryItem}
+                    key={category._id}
+                    onMouseEnter={() => setSelectedCategory(category)}
+                  >
+                    {category.name}
+                    <RiArrowRightSLine />
+                  </span>
+                ))}
+            </div>
+          )}
+
+          {selectedDepartment && (
+            <div className={styles.BigBanner}>
               <img
-                src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628303887/amazonias/jonathan-francisca-YHbcum51JB0-unsplash.jpg/1628303883890.jpg"
+                src={selectedDepartment.banners[0].url}
                 alt="ajksndjs sajdjk"
               />
             </div>
-            <div className={styles.Banner}>
-              <img
-                src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628303887/amazonias/jonathan-francisca-YHbcum51JB0-unsplash.jpg/1628303883890.jpg"
-                alt="ajksndjs sajdjk"
-              />
+          )}
+
+          {selectedCategory && (
+            <div className={styles.BannersContainer}>
+              {selectedCategory.banners.map((banner) => (
+                <div className={styles.Banner} key={banner.publicId}>
+                  <img src={banner.url} alt="ajksndjs sajdjk" />
+                </div>
+              ))}
             </div>
-            <div className={styles.Banner}>
-              <img
-                src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628303887/amazonias/jonathan-francisca-YHbcum51JB0-unsplash.jpg/1628303883890.jpg"
-                alt="ajksndjs sajdjk"
-              />
-            </div>
-            <div className={styles.Banner}>
-              <img
-                src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628303887/amazonias/jonathan-francisca-YHbcum51JB0-unsplash.jpg/1628303883890.jpg"
-                alt="ajksndjs sajdjk"
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </>

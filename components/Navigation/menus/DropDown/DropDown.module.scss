@@ -60,11 +60,18 @@
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
+    }
 
-      &:hover {
-        color: $yellow;
-        font-weight: bold;
-      }
+    .DepartmentItemActive {
+      color: $yellow;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      font-size: 0.9rem;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 

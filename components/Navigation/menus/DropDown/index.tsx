@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { RiArrowRightSLine } from 'react-icons/ri';
+import { DepartmentsMenu } from '../../../../types/Department';
 import styles from './DropDown.module.scss';
 
-const DropDown = () => {
+const DropDown = ({ data }: { data: DepartmentsMenu[] | null }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] =
+    useState<DepartmentsMenu | null>(null);
 
   return (
     <>
-      {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
       <div
         className={styles.TextContent}
         onClick={() => setIsOpen((prev) => !prev)}
         onKeyDown={() => setIsOpen((prev) => !prev)}
         role="menu"
+        tabIndex={0}
       >
         <span>All the </span>
         <strong>
@@ -24,121 +27,40 @@ const DropDown = () => {
           style={{ display: isOpen ? 'flex' : 'none' }}
         >
           <div className={styles.DepartmentList}>
-            <span className={styles.DepartmentItem}>
-              Amazon Prime Video
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Echo y Alexa
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Alimentos y bebidas
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
-            <span className={styles.DepartmentItem}>
-              Amazon music
-              <RiArrowRightSLine />
-            </span>
+            {data &&
+              data.map((department) => (
+                <span
+                  className={
+                    selectedDepartment?._id === department._id
+                      ? styles.DepartmentItemActive
+                      : styles.DepartmentItem
+                  }
+                  key={department._id}
+                  onMouseEnter={() => setSelectedDepartment(department)}
+                >
+                  {department.name}
+                  <RiArrowRightSLine />
+                </span>
+              ))}
           </div>
-          <div className={styles.CategoriesContainer}>
+          <div
+            className={styles.CategoriesContainer}
+            style={{ display: selectedDepartment ? 'block' : 'none' }}
+          >
             <div className={styles.CategoryList}>
-              <div className={styles.CategoryItem}>
-                <h3> E-readers </h3>
-                <div className={styles.SubList}>
-                  <span>Kindle</span>
-                  <span>Kindle Peperwhite</span>
-                  <span>Kindle Oasis</span>
-                  <span>Kindle Accesories</span>
+              {selectedDepartment?.categories.map((category) => (
+                <div className={styles.CategoryItem} key={category._id}>
+                  <h3> {category.name} </h3>
+                  <div className={styles.SubList}>
+                    {category.subs.map((sub) => (
+                      <span key={sub._id}> {sub.name} </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.CategoryItem}>
-                <h3> Apps Kindle asjdnjsd</h3>
-                <div className={styles.SubList}>
-                  <span>Kindle</span>
-                  <span>Kindle Peperwhite</span>
-                  <span>Kindle Oasis</span>
-                  <span>Kindle Accesories</span>
-                </div>
-              </div>
-              <div className={styles.CategoryItem}>
-                <h3> E-readers </h3>
-                <div className={styles.SubList}>
-                  <span>Kindle</span>
-                  <span>Kindle Peperwhite</span>
-                  <span>Kindle Oasis</span>
-                  <span>Kindle Accesories</span>
-                </div>
-              </div>
-              <div className={styles.CategoryItem}>
-                <h3> E-readers </h3>
-                <div className={styles.SubList}>
-                  <span>Kindle</span>
-                  <span>Kindle Peperwhite</span>
-                  <span>Kindle Oasis</span>
-                  <span>Kindle Accesories</span>
-                </div>
-              </div>
-              <div className={styles.CategoryItem}>
-                <h3> E-readers </h3>
-                <div className={styles.SubList}>
-                  <span>Kindle</span>
-                  <span>Kindle Peperwhite</span>
-                  <span>Kindle Oasis</span>
-                  <span>Kindle Accesories</span>
-                </div>
-              </div>
-              <div className={styles.CategoryItem}>
-                <h3> E-readers </h3>
-                <div className={styles.SubList}>
-                  <span>Kindle</span>
-                  <span>Kindle Peperwhite</span>
-                  <span>Kindle Oasis</span>
-                  <span>Kindle Accesories</span>
-                </div>
-              </div>
+              ))}
             </div>
             <div className={styles.ImgContainer}>
-              <img
-                src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628303896/amazonias/giu-vicente-FMArg2k3qOU-unsplash.jpg/1628303893253.jpg"
-                alt="asndjkasjdj"
-              />
+              <img src={selectedDepartment?.banners[0].url} alt="asndjkasjdj" />
             </div>
           </div>
         </div>
