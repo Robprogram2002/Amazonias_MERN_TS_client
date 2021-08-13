@@ -136,7 +136,12 @@ const CreateVendorForm = ({ vendor }: { vendor: IVendor | null }) => {
                 description: values.details,
               });
             }
-            return actions.resetForm();
+
+            return actions.resetForm({
+              values: {
+                ...values,
+              },
+            });
           }}
         >
           {({ handleSubmit, isValid, errors, touched, values }) => (

@@ -25,6 +25,7 @@ const schema = Yup.object({
   departmentId: Yup.string().trim().required('is required select a department'),
   categoryId: Yup.string().trim().required('is required select a department'),
   brand: Yup.string().trim().required('is required select a currency'),
+  vendor: Yup.string().trim().required('this field is required'),
   features: Yup.array(Yup.string()).required(),
   subs: Yup.array(Yup.string()).required(),
   specifications: Yup.array(
@@ -66,6 +67,7 @@ const initialValues = {
   departmentId: '',
   categoryId: '',
   brand: '',
+  vendor: '',
   features: [''],
   subs: [''],
   specifications: [{ name: '', value: '' }],
@@ -76,7 +78,6 @@ const initialValues = {
 
 const menuKeys = [
   'general',
-  'inventory',
   'features',
   'description',
   'details',
@@ -125,62 +126,55 @@ const VariantsProductForm = () => {
         return actions.resetForm({ values });
       }}
     >
-      {({ handleSubmit, isValid, values }) => {
-        console.log(values);
-        return (
-          <Form role="form" autoComplete="Off" onSubmit={handleSubmit}>
-            <div className={styles.Grid}>
-              <div className={styles.SideBar}>
-                {menuKeys.map((key) => (
-                  <button
-                    type="button"
-                    key={key}
-                    className={
-                      menuKey === key ? styles.ActiveMenuItem : styles.MenuItem
-                    }
-                    onClick={() => {
-                      setMenuKey(key);
-                    }}
-                  >
-                    {key.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-
-              <ProductGeneral menuKey={menuKey} />
-
-              <ProductDescription menuKey={menuKey} handler={setEditorDesc} />
-
-              <ProductDetails
-                title="Details About The Product"
-                menuKey={menuKey}
-              />
-
-              <ProductFeatures menuKey={menuKey} />
-
-              <ProductOptions menuKey={menuKey} />
-
-              <ProductVariants menuKey={menuKey} />
+      {({ handleSubmit, isValid, values }) => (
+        <Form role="form" autoComplete="Off" onSubmit={handleSubmit}>
+          <div className={styles.Grid}>
+            <div className={styles.SideBar}>
+              {menuKeys.map((key) => (
+                <button
+                  type="button"
+                  key={key}
+                  className={
+                    menuKey === key ? styles.ActiveMenuItem : styles.MenuItem
+                  }
+                  onClick={() => {
+                    setMenuKey(key);
+                  }}
+                >
+                  {key.toUpperCase()}
+                </button>
+              ))}
             </div>
 
-            <div style={{ height: '30px' }} />
+            <ProductGeneral menuKey={menuKey} />
 
-            <Center>
-              <AdminSubmit
-                update={false}
-                loading={isLoading}
-                disabled={
-                  !(
-                    isValid &&
-                    values.title !== '' &&
-                    values.departmentId !== ''
-                  )
-                }
-              />
-            </Center>
-          </Form>
-        );
-      }}
+            <ProductDescription menuKey={menuKey} handler={setEditorDesc} />
+
+            <ProductDetails
+              title="Details About The Product"
+              menuKey={menuKey}
+            />
+
+            <ProductFeatures menuKey={menuKey} />
+
+            <ProductOptions menuKey={menuKey} />
+
+            <ProductVariants menuKey={menuKey} />
+          </div>
+
+          <div style={{ height: '30px' }} />
+
+          <Center>
+            <AdminSubmit
+              update={false}
+              loading={isLoading}
+              disabled={
+                !(isValid && values.title !== '' && values.departmentId !== '')
+              }
+            />
+          </Center>
+        </Form>
+      )}
     </Formik>
   );
 };

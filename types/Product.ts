@@ -67,6 +67,8 @@ export interface IProduct {
     star: number;
     postedBy: any;
   }[];
+  rateCount: number;
+  averageRate: number;
   department: IDepartment[] | null;
   category: ICategory[] | null;
   questions: any[];

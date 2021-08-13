@@ -1,4 +1,7 @@
+import { IDepartment } from 'types/Department';
 import axios from 'axios';
+import { ISubCategory } from 'types/SubCategory';
+import { ICategory } from 'types/Category';
 import { IBrand } from '../../types/Brand';
 
 interface BrandPayload {
@@ -17,6 +20,24 @@ export const fetchtBrands = async () => {
 
 export const fetchBrand = async (slug: string | string[]) => {
   const { data } = await axios.get<IBrand>(`/brands/list/${slug}`);
+  return data;
+};
+
+export const fetchFeaturedBrands = async (
+  department: IDepartment | null,
+  category: ICategory | null,
+  sub: ISubCategory | null
+) => {
+  const requestParams = {
+    department: department?._id,
+    category: category?._id || null,
+    sub: sub?._id || null,
+  };
+
+  const { data } = await axios.get<IBrand[]>('/brands/featured', {
+    params: requestParams,
+  });
+
   return data;
 };
 

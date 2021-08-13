@@ -1,4 +1,6 @@
+import { IProduct } from 'types/Product';
 import axios from 'axios';
+import { IFilterContext } from '@context/FilterContext';
 
 interface BaseProduct {
   title: string;
@@ -10,6 +12,7 @@ interface BaseProduct {
   departmentId: string;
   categoryId: string;
   subs: string[];
+  vendor: string;
   brand: string;
   details: string;
 }
@@ -68,6 +71,40 @@ export const filterProducts = (
     category,
     subcategory,
   });
+
+export const fetchHomeProducts = async () => {
+  const { data } = await axios.get<{
+    recentProducts: IProduct[];
+    mostSoldProducts: IProduct[];
+    onSaleProducts: IProduct[];
+    mostRatingProducts: IProduct[];
+  }>('/products/home');
+  return data;
+};
+
+export const fetchStoreProducts = async (filters: IFilterContext) => {
+  const requestData = {
+    department: filters.department?._id || '',
+    category: filters.category?._id || '',
+    sub: filters.sub?._id || '',
+    price: filters.price || null,
+    brand: filters.brand || null,
+    rating: filters.rating || null,
+    vendor: filters.vendor || null,
+    condition: filters.condition || null,
+    sort: filters.sort,
+  };
+
+  const { data } = await axios.post<IProduct[]>('/products/store', {
+    ...requestData,
+  });
+  return data;
+};
+
+export const fetchPageProduct = async (slug: string) => {
+  const { data } = await axios.get<IProduct>(`/products/page/${slug}`);
+  return data;
+};
 
 export const addProduct = (data: ProductPayload) =>
   axios.post('/products/create', { ...data });

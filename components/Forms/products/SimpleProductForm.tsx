@@ -21,8 +21,7 @@ const schema = Yup.object({
   title: Yup.string()
     .trim()
     .required('name is required')
-    .min(4, 'name must be at least 4 characters')
-    .max(70, 'too long name'),
+    .min(4, 'name must be at least 4 characters'),
   departmentId: Yup.string().trim().required('is required select a department'),
   categoryId: Yup.string().trim().required('is required select a department'),
   currency: Yup.string().trim().required('is required select a currency'),
@@ -30,6 +29,7 @@ const schema = Yup.object({
   condition: Yup.string().trim().required('is required select a currency'),
   state: Yup.string().trim().required('is required select a currency'),
   brand: Yup.string().trim().required('is required select a currency'),
+  vendor: Yup.string().trim().required('this field is required'),
   availability: Yup.string().trim().required('is required select a currency'),
   basePrice: Yup.number().min(0).required('product price is required'),
   stock: Yup.number().min(0).required('product stock is required'),
@@ -59,6 +59,7 @@ const initialValues = {
   condition: '',
   state: '',
   brand: '',
+  vendor: '',
   availability: '',
   basePrice: 0.0,
   stock: 0,

@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { ISubCategory } from 'types/SubCategory';
+import { ICategory } from 'types/Category';
+import { IDepartment } from 'types/Department';
 import { IVendor, VendorWithProducts } from '../../types/Vendor';
 
 interface AddVendorPayload {
@@ -38,6 +41,24 @@ export const fetchVendorWithProducts = async (slug: string | string[]) => {
 
 export const fetchVendor = async (slug: string | string[]) => {
   const { data } = await axios.get<IVendor>(`/vendors/list/${slug}`);
+  return data;
+};
+
+export const fetchFeaturedVendors = async (
+  department: IDepartment | null,
+  category: ICategory | null,
+  sub: ISubCategory | null
+) => {
+  const requestParams = {
+    department: department?._id,
+    category: category?._id || null,
+    sub: sub?._id || null,
+  };
+
+  const { data } = await axios.get<IVendor[]>('/vendors/featured', {
+    params: requestParams,
+  });
+
   return data;
 };
 

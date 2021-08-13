@@ -11,7 +11,7 @@ const CreateProductForm = ({ type }: { type: string }) => {
   // });
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.ProductContainer}>
       {type === 'simple' ? <SimpleProductForm /> : <VariantsProductForm />}
     </div>
   );

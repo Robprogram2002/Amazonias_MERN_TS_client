@@ -1,16 +1,33 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FaBars, FaArrowLeft } from 'react-icons/fa';
 import { BiUserCircle } from 'react-icons/bi';
 import { RiArrowRightSLine } from 'react-icons/ri';
 
 import { IoMdArrowDropdown, IoMdClose } from 'react-icons/io';
+import { filterSettersContext } from '@context/FilterContext';
+import { useRouter } from 'next/router';
 import { DepartmentsMenu } from '../../../../types/Department';
 import styles from './SideBarMenu.module.scss';
+import { CategorySubs } from '../../../../types/Category';
 
 const SideBarMenu = ({ data }: { data: DepartmentsMenu[] | null }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectDepartment, setSelectDepartment] =
     useState<DepartmentsMenu | null>(null);
+
+  const { setDepartment, setCategory, setSub } =
+    useContext(filterSettersContext);
+  const router = useRouter();
+
+  const setFilterCategory = (
+    category: CategorySubs,
+    department: DepartmentsMenu
+  ) => {
+    setDepartment(department);
+    setCategory(category);
+    setSub(null);
+    router.push('/store');
+  };
 
   return (
     <>
@@ -135,7 +152,14 @@ const SideBarMenu = ({ data }: { data: DepartmentsMenu[] | null }) => {
           </div>
           <h1> {selectDepartment?.name} </h1>
           {selectDepartment?.categories.map((category) => (
-            <div className={styles.Item} key={category._id}>
+            <div
+              className={styles.Item}
+              key={category._id}
+              onClick={() => setFilterCategory(category, selectDepartment)}
+              onKeyDown={() => setFilterCategory(category, selectDepartment)}
+              tabIndex={0}
+              role="menuitem"
+            >
               <span> {category.name} </span>
             </div>
           ))}

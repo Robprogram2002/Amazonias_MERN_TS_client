@@ -2,7 +2,13 @@
 
 .Container {
   width: 700px;
-  // width: '100%';
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.ProductContainer {
+  width: 100%;
   background-color: white;
   padding: 1rem;
   border-radius: 6px;
