@@ -1,0 +1,90 @@
+@import '../../../styles/constants.scss';
+
+.Background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.801);
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .InputContainer {
+    width: 500px;
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
+
+    .Header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: $secondGray;
+      padding: 0.5rem 0.8rem;
+
+      h2 {
+        color: $mainBlack;
+        margin: 0rem;
+      }
+
+      .CloseIcon {
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+
+    .Content {
+      padding: 1rem;
+
+      .TextArea {
+        border-radius: 6px;
+        margin-bottom: 0.8rem;
+      }
+
+      p {
+        color: $strongGray;
+      }
+    }
+
+    .Buttons {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      button {
+        outline: none;
+        border: none;
+        margin: 8px 0px;
+        border-radius: 6px;
+        padding: 4px 14px;
+        color: $mainBlack;
+        cursor: pointer;
+        margin-right: 0.6rem;
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+
+      .Cancel {
+        border: 1px solid $strongGray;
+        color: $mainBlack;
+        background-color: white;
+      }
+
+      .Post {
+        color: $mainBlack;
+        background-color: $mainOrange;
+      }
+    }
+  }
+}

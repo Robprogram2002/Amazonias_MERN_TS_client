@@ -1,0 +1,193 @@
+@import '../../../styles/constants.scss';
+
+.HeadContainer {
+  width: 100%;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 48% 52%;
+  grid-template-rows: 100%;
+
+  .Galery {
+    display: flex;
+    width: 100%;
+
+    .ImageColumn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 10%;
+      margin-right: 5px;
+
+      img {
+        width: 100%;
+        height: 50px;
+        object-fit: cover;
+        margin: 8px 0px;
+        cursor: pointer;
+        border: 1px solid $gray;
+
+        &:hover {
+          border: 1px solid $mainOrange;
+          box-shadow: 0px 0px 6px #f8920dfa;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+      }
+
+      img.Active {
+        border: 1px solid $mainOrange;
+        box-shadow: 0px 0px 6px #f8920dfa;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+    }
+
+    .MainImage {
+      width: 88%;
+      min-height: 300px;
+      max-height: 500px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .ProductInfo {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 57% 38%;
+    padding: 0rem 1rem;
+
+    .Data {
+      h1 {
+        font-size: 1.4rem;
+        margin: 0;
+      }
+
+      hr {
+        border: 0.8px solid $secondGray;
+      }
+
+      .TextLink {
+        color: $linkBlue;
+        cursor: pointer;
+
+        &:hover {
+          color: $mainOrange;
+          text-decoration: underline;
+          font-size: 0.9rem;
+        }
+      }
+
+      .Rating {
+        .Stars {
+          color: $mainOrange;
+          margin-right: 10px;
+        }
+      }
+
+      .Specifications {
+        width: 100%;
+
+        .SpecificationRow {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 38% 62%;
+          margin: 6px 0px;
+
+          span {
+            margin-left: 4px;
+            font-size: 0.9rem;
+            color: $mainBlack;
+          }
+        }
+      }
+
+      .Features {
+        h3 {
+          font-size: 1.1rem;
+          font-weight: bold;
+        }
+
+        ul {
+          padding: 0;
+          padding-left: 1rem;
+
+          li {
+            color: $mainBlack;
+          }
+        }
+      }
+    }
+
+    .SideCard {
+      margin: 0rem 2rem;
+      width: 100%;
+      border: 1.4px solid $secondGray;
+      border-radius: 8px;
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+
+      h3 {
+        font-size: 1.2rem;
+        color: rgb(214, 16, 16);
+      }
+
+      .ProductAvailability {
+        color: rgb(214, 16, 16);
+        font-size: 1.4rem;
+        margin: 6px 0px;
+        padding: 0;
+      }
+
+      button {
+        width: 100%;
+        outline: none;
+        border: none;
+        margin: 8px 0px;
+        border-radius: 14px;
+        padding: 6px 8px;
+        color: $mainBlack;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+
+      .CartButton {
+        background-color: rgb(255, 217, 0);
+      }
+
+      .BuyButton {
+        background-color: $mainOrange;
+      }
+
+      .WhishListButton {
+        border: 1px solid $strongGray;
+      }
+
+      .Details {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 32% 68%;
+        margin-bottom: 1rem;
+
+        p {
+          margin: 0;
+          padding: 0;
+          font-size: 0.8rem;
+        }
+
+        span {
+          color: $strongGray;
+          font-size: 0.8rem;
+          margin-right: 3px;
+        }
+      }
+    }
+  }
+}

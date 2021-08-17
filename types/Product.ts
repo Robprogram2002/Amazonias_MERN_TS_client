@@ -51,6 +51,7 @@ export interface IProduct {
   departmentId: any;
   categoryId: any;
   subs: any[];
+  vendor: any;
   availability: string;
   state: string;
   condition: string;
@@ -71,8 +72,6 @@ export interface IProduct {
   averageRate: number;
   department: IDepartment[] | null;
   category: ICategory[] | null;
-  questions: any[];
-  comments: any[];
   createdAt: Date;
   updatedAt: Date;
 }

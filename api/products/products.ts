@@ -56,8 +56,10 @@ interface ProductVariantPayload extends BaseProduct {
 
 export const fetchProducts = () => axios.get('/products/list');
 
-export const fetchOneProduct = (slug: string | string[]) =>
-  axios.get(`/products/list/${slug}`);
+export const fetchOneProduct = async (slug: string | string[]) => {
+  const { data } = await axios.get<IProduct>(`/products/list/${slug}`);
+  return data;
+};
 
 export const filterProducts = (
   text: string,
@@ -102,7 +104,12 @@ export const fetchStoreProducts = async (filters: IFilterContext) => {
 };
 
 export const fetchPageProduct = async (slug: string) => {
-  const { data } = await axios.get<IProduct>(`/products/page/${slug}`);
+  const { data } = await axios.get<{
+    product: IProduct;
+    productsOntheSameCategory: IProduct[];
+    relatedProducts: IProduct[];
+    baseOnHistory: IProduct[] | null;
+  }>(`/products/page/${slug}`);
   return data;
 };
 
