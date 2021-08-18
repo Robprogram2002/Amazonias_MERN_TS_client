@@ -7,8 +7,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import axios from 'axios';
 import StoreMenu from '@components/Navigation/menus/StoreMenu';
-import AuthProvider from '../context/AuthContext';
-import FilterProvider from '../context/FilterContext';
+import AuthProvider from '@context/AuthContext';
+import FilterProvider from '@context/FilterContext';
+import AppContextProvider from '@context/AppContext';
 
 import '../styles/globals.css';
 import 'nprogress/nprogress.css';
@@ -43,10 +44,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <AuthProvider>
-          <FilterProvider>
-            {!isAuthRoute && !isAdminRoute && <StoreMenu />}
-            <Component {...pageProps} />
-          </FilterProvider>
+          <AppContextProvider>
+            <FilterProvider>
+              {!isAuthRoute && !isAdminRoute && <StoreMenu />}
+              <Component {...pageProps} />
+            </FilterProvider>
+          </AppContextProvider>
         </AuthProvider>
       </QueryClientProvider>
     </>

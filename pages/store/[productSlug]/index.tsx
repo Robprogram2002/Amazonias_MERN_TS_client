@@ -5,7 +5,7 @@ import Center from '@components/Layout/Containers/Center';
 import ProductPageCarousel from '@components/Products/Carousel/ProductPageCarousel';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-
+import CartDrawer from '@components/Layout/Drawers/CartDrawer';
 import Questions from '@components/Products/PageSections/Questions';
 import Header from '@components/Products/PageSections/Header';
 import Description from '@components/Products/PageSections/Description';
@@ -57,13 +57,20 @@ const ProductPage = () => {
       <div className={styles.Section}>
         {data && (
           <Questions
-            productId={data!.product._id}
-            productSlug={data!.product.slug}
+            productId={data.product._id}
+            productSlug={data.product.slug}
           />
         )}
       </div>
       <div className={styles.Section}>
-        <Reviews />
+        {data && (
+          <Reviews
+            productId={data.product._id}
+            productSlug={data.product.slug}
+            averageRate={data.product.averageRate}
+            ratings={data.product.ratings}
+          />
+        )}
       </div>
       <div className={styles.Section}>
         <h2>Related Products</h2>
@@ -81,6 +88,10 @@ const ProductPage = () => {
           {data && <ProductPageCarousel products={data.relatedProducts} />}
         </div>
       )}
+      <CartDrawer
+        product={data!.product}
+        relatedProducts={data!.relatedProducts.slice(0, 3)}
+      />
     </div>
   );
 };

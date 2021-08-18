@@ -17,7 +17,7 @@ export type ShopCart = {
 
 export interface IUser {
   _id: string;
-  username: string | null;
+  username: string;
   email: string;
   photoUrl: string;
   firstName: string;

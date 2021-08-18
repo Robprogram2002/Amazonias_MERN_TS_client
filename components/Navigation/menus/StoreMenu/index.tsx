@@ -3,18 +3,24 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { useQuery } from 'react-query';
 import { fetchMenuData } from '@api/products/departments';
-import { toast } from 'react-toastify';
-import styles from './StoreMenu.module.scss';
+import { useContext } from 'react';
+import { authContext } from '@context/AuthContext';
+import { useRouter } from 'next/router';
 import DropDown from '../DropDown';
 import DropDownTwo from '../DropDown/DropDownTwo';
 import SideBarMenu from '../SideBarMenu';
+import styles from './StoreMenu.module.scss';
 
 const index = () => {
-  const { isError, data } = useQuery('fetch-menuData', fetchMenuData);
+  const { user } = useContext(authContext);
+  const { data } = useQuery('fetch-menuData', fetchMenuData);
+  const router = useRouter();
 
-  if (isError) {
-    toast.error('ohhhhh noooo, something went wrong with menu data');
-  }
+  const redirectToCart = () => router.push('/user/cart');
+
+  const items = user
+    ? user.cart.products.reduce((count, element) => element.count + count, 0)
+    : 0;
 
   return (
     <>
@@ -30,10 +36,11 @@ const index = () => {
         </div>
         <div className={styles.RightsContainer}>
           <div className={styles.TextContent}>
-            <span>Hello sign In</span>
+            <span>
+              Hello, {user ? user.username.split(' ')[0] : 'sign In'}{' '}
+            </span>
             <strong>
-              {' '}
-              Account & List <IoMdArrowDropdown />{' '}
+              Account & List <IoMdArrowDropdown />
             </strong>
           </div>
           <div className={styles.TextContent}>
@@ -42,11 +49,17 @@ const index = () => {
               & Orders <IoMdArrowDropdown />{' '}
             </strong>
           </div>
-          <div className={styles.CartContainer}>
+          <div
+            className={styles.CartContainer}
+            onClick={redirectToCart}
+            onKeyDown={redirectToCart}
+            role="menuitem"
+            tabIndex={0}
+          >
             <FiShoppingCart size={36} />
             <span>Cart</span>
             <div className={styles.CartCount}>
-              <span> 3 </span>
+              <span> {items} </span>
             </div>
           </div>
         </div>

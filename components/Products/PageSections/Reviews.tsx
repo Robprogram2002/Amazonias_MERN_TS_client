@@ -1,215 +1,202 @@
+import { fetchProductComments, fetchProductImageComments } from '@api/comments';
+import { authContext } from '@context/AuthContext';
+import { IProduct } from 'types/Product';
 import { Rate, Progress, Avatar } from 'antd';
+import { useContext, useState } from 'react';
+import { useQuery } from 'react-query';
+import CreateReviewForm from '@components/Forms/revires/CreateReviewForm';
+import fireAuthNotification from '@components/UI/Notifications/AuthNotification';
+import { useRouter } from 'next/router';
 import styles from './Reviews.module.scss';
 
-const Reviews = () => (
-  <>
-    <h2>Customer reviews</h2>
-    <div className={styles.Container}>
-      <div className={styles.Ratings}>
-        <div className={styles.Average}>
-          <Rate disabled allowHalf value={4.2} className={styles.Stars} />
-          <span className={styles.RateValue}>4.2 out of 5</span>
-        </div>
-        <span className={styles.TotalCount}>34,174 global ratings</span>
-        <div className={styles.RateTable}>
-          <div className={styles.Row}>
-            <span> 5 star</span>
-            <Progress
-              percent={91}
-              strokeWidth={22}
-              strokeColor="orange"
-              strokeLinecap="square"
-              showInfo={false}
-              className={styles.Progress}
-            />
-            <span className={styles.Percentage}> 91%</span>
-          </div>
-          <div className={styles.Row}>
-            <span> 4 star</span>
-            <Progress
-              percent={6}
-              strokeWidth={22}
-              strokeColor="orange"
-              strokeLinecap="square"
-              showInfo={false}
-              className={styles.Progress}
-            />
-            <span className={styles.Percentage}> 6%</span>
-          </div>
-          <div className={styles.Row}>
-            <span> 3 star</span>
-            <Progress
-              percent={1}
-              strokeWidth={22}
-              strokeColor="orange"
-              strokeLinecap="square"
-              showInfo={false}
-              className={styles.Progress}
-            />
-            <span className={styles.Percentage}> 1%</span>
-          </div>
-          <div className={styles.Row}>
-            <span> 2 star</span>
-            <Progress
-              percent={0}
-              strokeWidth={22}
-              strokeColor="orange"
-              strokeLinecap="square"
-              showInfo={false}
-              className={styles.Progress}
-            />
-            <span className={styles.Percentage}> 0%</span>
-          </div>
-          <div className={styles.Row}>
-            <span> 1 star</span>
-            <Progress
-              percent={1}
-              strokeWidth={25}
-              strokeColor="orange"
-              strokeLinecap="square"
-              showInfo={false}
-              className={styles.Progress}
-            />
-            <span className={styles.Percentage}> 1%</span>
-          </div>
-        </div>
-      </div>
-      <div className={styles.CommentsContainer}>
-        <div style={{ width: '80%' }}>
-          <h3>Reviews with images</h3>
-          <div className={styles.ImagesRow}>
-            <img
-              src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628626100/amazonias/fachry-zella-devandra-bNSdIkCBJOs-unsplash.jpg/1628626097686.jpg"
-              alt="asnd hasjkads"
-            />
-            <img
-              src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628626100/amazonias/fachry-zella-devandra-bNSdIkCBJOs-unsplash.jpg/1628626097686.jpg"
-              alt="asnd hasjkads"
-            />
-            <img
-              src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628626100/amazonias/fachry-zella-devandra-bNSdIkCBJOs-unsplash.jpg/1628626097686.jpg"
-              alt="asnd hasjkads"
-            />
-            <img
-              src="https://res.cloudinary.com/dhpjmkudq/image/upload/v1628626100/amazonias/fachry-zella-devandra-bNSdIkCBJOs-unsplash.jpg/1628626097686.jpg"
-              alt="asnd hasjkads"
-            />
-          </div>
-          <span className={styles.TextLink}>See all customer images</span>
-          <h3>Top Reviews</h3>
+const defaultComments = 6;
 
-          <div className={styles.CommentCard}>
-            <div className={styles.User}>
-              <Avatar className={styles.Avatar} />
-              <span> Roberto Martinez </span>
-            </div>
-            <div className={styles.Head}>
-              <Rate disabled allowHalf value={4.2} className={styles.Stars} />
-              <h4>Could not get it to run at rated speed on an MSI X570 MB</h4>
-            </div>
-            <span className={styles.GrayText}>
-              Reviewed in the United States on December 27, 2020
-            </span>
-            <div className={styles.Content}>
-              <p>
-                It will run at 2133 MHz out of the box, but that&apos;s not what
-                you&apos;re paying for. Perhaps it works fine with Intel
-                chipsets, but it consistently refused to boot with the MSI X570
-                Prestige motherboard. Not using the XMP profile, not by setting
-                the timings manually, not after increasing the voltage to 1.35 V
-                or above.
-              </p>
-              <p>
-                The highest speed I could get it to run at is 2800 MHz. If
-                you&apos;re looking for a memory for a Ryzen build, probably
-                look elsewhere.
-              </p>
-            </div>
-            <span className={styles.GrayText}>
-              52 people found this helpful
-            </span>
-            <button className={styles.VoteButton} type="button">
-              Helpful
-            </button>
-            <span className={styles.AbuseText}>Report abuse</span>
-          </div>
+const Reviews = ({
+  productSlug,
+  productId,
+  averageRate,
+  ratings,
+}: {
+  productSlug: string;
+  productId: string;
+  averageRate: number;
+  ratings: IProduct['ratings'];
+}) => {
+  const { user, authenticated } = useContext(authContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
-          <div className={styles.CommentCard}>
-            <div className={styles.User}>
-              <Avatar className={styles.Avatar} />
-              <span> Roberto Martinez </span>
-            </div>
-            <div className={styles.Head}>
-              <Rate disabled allowHalf value={4.2} className={styles.Stars} />
-              <h4>Could not get it to run at rated speed on an MSI X570 MB</h4>
-            </div>
-            <span className={styles.GrayText}>
-              Reviewed in the United States on December 27, 2020
-            </span>
-            <div className={styles.Content}>
-              <p>
-                It will run at 2133 MHz out of the box, but that&apos;s not what
-                you&apos;re paying for. Perhaps it works fine with Intel
-                chipsets, but it consistently refused to boot with the MSI X570
-                Prestige motherboard. Not using the XMP profile, not by setting
-                the timings manually, not after increasing the voltage to 1.35 V
-                or above.
-              </p>
-              <p>
-                The highest speed I could get it to run at is 2800 MHz. If
-                you&apos;re looking for a memory for a Ryzen build, probably
-                look elsewhere.
-              </p>
-            </div>
-            <span className={styles.GrayText}>
-              52 people found this helpful
-            </span>
-            <button className={styles.VoteButton} type="button">
-              Helpful
-            </button>
-            <span className={styles.AbuseText}>Report abuse</span>
-          </div>
+  const { data } = useQuery(
+    ['fetch-product-reviews', productSlug],
+    () => fetchProductComments(productSlug, user?._id || null, ''),
+    {
+      enabled: !!productSlug,
+    }
+  );
 
-          <div className={styles.CommentCard}>
-            <div className={styles.User}>
-              <Avatar className={styles.Avatar} />
-              <span> Roberto Martinez </span>
-            </div>
-            <div className={styles.Head}>
-              <Rate disabled allowHalf value={4.2} className={styles.Stars} />
-              <h4>Could not get it to run at rated speed on an MSI X570 MB</h4>
-            </div>
-            <span className={styles.GrayText}>
-              Reviewed in the United States on December 27, 2020
-            </span>
-            <div className={styles.Content}>
-              <p>
-                It will run at 2133 MHz out of the box, but that&apos;s not what
-                you&apos;re paying for. Perhaps it works fine with Intel
-                chipsets, but it consistently refused to boot with the MSI X570
-                Prestige motherboard. Not using the XMP profile, not by setting
-                the timings manually, not after increasing the voltage to 1.35 V
-                or above.
-              </p>
-              <p>
-                The highest speed I could get it to run at is 2800 MHz. If
-                you&apos;re looking for a memory for a Ryzen build, probably
-                look elsewhere.
-              </p>
-            </div>
-            <span className={styles.GrayText}>
-              52 people found this helpful
-            </span>
-            <button className={styles.VoteButton} type="button">
-              Helpful
-            </button>
-            <span className={styles.AbuseText}>Report abuse</span>
-          </div>
-        </div>
-      </div>
-      <div style={{ height: '40px' }} />
+  const imageReviews = useQuery(
+    ['fetch-product-reviews-with-images', productSlug],
+    () => fetchProductImageComments(productSlug, user?._id || null)
+  );
+
+  const total = ratings.length;
+
+  const getPercentage = (value: number) => {
+    const count = ratings.filter(
+      (rating) => Math.floor(rating.star) === value
+    ).length;
+    return Math.round((count / total) * 100);
+  };
+
+  const clickHandler = () => {
+    if (!authenticated) {
+      fireAuthNotification(router);
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  const RateTableRow = ({ rate }: { rate: number }) => (
+    <div className={styles.Row}>
+      <span> {rate} star</span>
+      <Progress
+        percent={getPercentage(rate)}
+        strokeWidth={22}
+        strokeColor="orange"
+        strokeLinecap="square"
+        showInfo={false}
+        className={styles.Progress}
+      />
+      <span className={styles.Percentage}> {getPercentage(rate)} %</span>
     </div>
-  </>
-);
+  );
+
+  if (!data) {
+    return <div />;
+  }
+
+  return (
+    <>
+      {isOpen && (
+        <CreateReviewForm productId={productId} setIsOpen={setIsOpen} />
+      )}
+      <h2>Customer reviews</h2>
+      <div className={styles.Container}>
+        <div className={styles.Ratings}>
+          <div className={styles.Average}>
+            <Rate
+              disabled
+              allowHalf
+              value={averageRate}
+              className={styles.Stars}
+            />
+            <span className={styles.RateValue}>
+              {`${averageRate.toFixed(1)} out of 5 `}
+            </span>
+          </div>
+          <span className={styles.TotalCount}>
+            {ratings.length} global ratings
+          </span>
+          <div className={styles.RateTable}>
+            <RateTableRow rate={5} />
+            <RateTableRow rate={4} />
+            <RateTableRow rate={3} />
+            <RateTableRow rate={2} />
+            <RateTableRow rate={1} />
+          </div>
+
+          <div className={styles.MakeComment}>
+            <h3>Review this product</h3>
+            <p>Share your thoughts with other customers</p>
+            <button
+              className={styles.Button}
+              type="button"
+              onClick={clickHandler}
+            >
+              Write a customer review
+            </button>
+          </div>
+        </div>
+        <div className={styles.CommentsContainer}>
+          <div style={{ width: '80%' }}>
+            <h3>Reviews with images</h3>
+            {imageReviews.data && imageReviews.data.length > 0 && (
+              <>
+                <div className={styles.ImagesRow}>
+                  {imageReviews.data.slice(0, 4).map(({ images }) => (
+                    <img src={images[0].url} alt="asnjdksa d" />
+                  ))}
+                </div>
+                <span className={styles.TextLink}>See all customer images</span>
+              </>
+            )}
+
+            <h3>Top Reviews</h3>
+            <div className={styles.ReviewList}>
+              {data
+                .slice(0, defaultComments)
+                .map(
+                  ({
+                    customer,
+                    _id,
+                    createdAt,
+                    title,
+                    rate,
+                    userVote,
+                    likes,
+                    content,
+                  }) => (
+                    <div className={styles.CommentCard} key={_id}>
+                      <div className={styles.User}>
+                        <Avatar
+                          className={styles.Avatar}
+                          src={customer.photoUrl}
+                        />
+                        <span> {customer.username} </span>
+                      </div>
+                      <div className={styles.Head}>
+                        <Rate
+                          disabled
+                          allowHalf
+                          value={rate}
+                          className={styles.Stars}
+                        />
+                        <h4>{title}</h4>
+                      </div>
+                      <span className={styles.GrayText}>
+                        Reviewed in the United States on {createdAt}
+                      </span>
+                      <div className={styles.Content}>{content}</div>
+                      <span className={styles.GrayText}>
+                        {likes.length} people found this helpful
+                      </span>
+                      <button
+                        className={
+                          userVote
+                            ? `${styles.VoteButton} ${styles.Liked}`
+                            : styles.VoteButton
+                        }
+                        type="button"
+                      >
+                        Helpful
+                      </button>
+                      <span className={styles.AbuseText}>Report abuse</span>
+                    </div>
+                  )
+                )}
+            </div>
+            {data.length > defaultComments && (
+              <span className={styles.TextLink}>
+                See all the reviews from this product
+                {`(${data.length - defaultComments})`}
+              </span>
+            )}
+          </div>
+        </div>
+        <div style={{ height: '40px' }} />
+      </div>
+    </>
+  );
+};
 
 export default Reviews;

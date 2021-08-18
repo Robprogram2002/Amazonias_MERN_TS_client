@@ -1,0 +1,79 @@
+@import '../../../styles/constants.scss';
+
+.Container {
+  margin: 0.4rem 0rem;
+
+  .InputFile {
+    opacity: 0;
+    display: none;
+  }
+
+  .ImagesGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 1rem;
+    row-gap: 1rem;
+
+    .FileLabel {
+      height: 100px;
+      border: 1px dashed $strongGray;
+      background-color: $whiteGray;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        color: $strongGray;
+      }
+
+      &:hover {
+        border: 1px dashed $mainBlue;
+      }
+    }
+
+    .ImageCard {
+      height: 100px;
+      border: 1px solid $strongGray;
+      width: 100%;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .Options {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.537);
+        display: none;
+
+        span {
+          color: white;
+          cursor: pointer;
+        }
+      }
+
+      &:hover {
+        .Options {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          span {
+            margin: 8px;
+          }
+        }
+      }
+    }
+  }
+}

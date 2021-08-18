@@ -15,6 +15,7 @@ interface IAuthContextFunctions {
   login: (prop: any) => void;
   logout: () => void;
   me: (prop: any) => void;
+  editCart: (prop: IUser['cart']) => void;
 }
 
 interface IContextAction {
@@ -31,6 +32,7 @@ const initialStateFunctions: IAuthContextFunctions = {
   login: () => {},
   logout: () => {},
   me: () => {},
+  editCart: () => {},
 };
 
 export const authContext = createContext(initialState);
@@ -53,6 +55,14 @@ const AuthProvider: FC = ({ children }) => {
           ...state,
           user: action.payload,
           authenticated: true,
+        };
+      case 'CART':
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            cart: action.payload,
+          },
         };
       default:
         throw new Error(`Unknown action type: ${action.type}`);
@@ -80,6 +90,13 @@ const AuthProvider: FC = ({ children }) => {
       dispatch({
         type: 'ME',
         payload: userData,
+      });
+    },
+
+    editCart: (cart: IUser['cart']) => {
+      dispatch({
+        type: 'CART',
+        payload: cart,
       });
     },
   };
