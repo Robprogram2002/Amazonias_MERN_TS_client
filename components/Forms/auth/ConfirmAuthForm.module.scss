@@ -1,0 +1,103 @@
+@use '../../../styles/constants.scss' as *;
+
+.AuthContainer {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AuthForm {
+  background-color: white;
+  width: 340px;
+  border-radius: 2px;
+  border: 1px solid $secondGray;
+  margin-bottom: 2rem;
+
+  .AuthHead {
+    padding: 0.7rem;
+    border-bottom: 1px solid $secondGray;
+
+    h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  }
+
+  .Content {
+    padding: 0.5rem 1rem;
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    p {
+      color: $darkGray;
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    .OptionContainer {
+      border-bottom: 1px solid $secondGray;
+    }
+
+    .Option {
+      display: flex;
+      align-items: center;
+      padding: 6px 0px;
+      cursor: pointer;
+
+      h3 {
+        margin: 0;
+        color: $grayBlue;
+      }
+
+      &:hover {
+        h3 {
+          color: $darkBlue;
+        }
+      }
+    }
+
+    .OptionContent {
+      padding: 0.6rem 1rem;
+    }
+  }
+}
+
+.SubmitButton {
+  width: 100%;
+  padding: 6px 14px;
+  border-radius: 4px;
+  background-color: $darkBlue;
+  color: white;
+  outline: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .Icon {
+    position: absolute;
+    right: 0.8rem;
+    width: 35px;
+    height: 25px;
+  }
+}
+
+.TextLink {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: $linkBlue;
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    color: $linkHover;
+    text-decoration: underline;
+  }
+}

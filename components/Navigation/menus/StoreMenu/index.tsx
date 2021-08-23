@@ -1,26 +1,18 @@
 import { BsSearch } from 'react-icons/bs';
-import { FiShoppingCart } from 'react-icons/fi';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { useQuery } from 'react-query';
 import { fetchMenuData } from '@api/products/departments';
 import { useContext } from 'react';
 import { authContext } from '@context/AuthContext';
-import { useRouter } from 'next/router';
 import DropDown from '../DropDown';
 import DropDownTwo from '../DropDown/DropDownTwo';
 import SideBarMenu from '../SideBarMenu';
 import styles from './StoreMenu.module.scss';
+import CartDropDown from '../DropDown/CartDropDown';
 
 const index = () => {
   const { user } = useContext(authContext);
   const { data } = useQuery('fetch-menuData', fetchMenuData);
-  const router = useRouter();
-
-  const redirectToCart = () => router.push('/user/cart');
-
-  const items = user
-    ? user.cart.products.reduce((count, element) => element.count + count, 0)
-    : 0;
 
   return (
     <>
@@ -49,19 +41,7 @@ const index = () => {
               & Orders <IoMdArrowDropdown />{' '}
             </strong>
           </div>
-          <div
-            className={styles.CartContainer}
-            onClick={redirectToCart}
-            onKeyDown={redirectToCart}
-            role="menuitem"
-            tabIndex={0}
-          >
-            <FiShoppingCart size={36} />
-            <span>Cart</span>
-            <div className={styles.CartCount}>
-              <span> {items} </span>
-            </div>
-          </div>
+          <CartDropDown />
         </div>
       </div>
       <div className={styles.SubMenuConatiner}>

@@ -3,10 +3,9 @@ import { Rate, Select } from 'antd';
 import { IProduct } from 'types/Product';
 import { useMutation } from 'react-query';
 import { addPrductToCart } from '@api/cart';
-import { authContext, authFunctContext } from '@context/AuthContext';
-import fireAuthNotification from '@components/UI/Notifications/AuthNotification';
-import { useRouter } from 'next/router';
+import { authContext } from '@context/AuthContext';
 import { appContext } from '@context/AppContext';
+import { cartContext } from '@context/CartContext';
 import styles from './Header.module.scss';
 
 const { Option } = Select;
@@ -20,18 +19,22 @@ const range = (min: number, max: number) => {
 
 const Header = ({ product }: { product: IProduct }) => {
   const [quantity, setQuantity] = useState(1);
-  const { editCart } = useContext(authFunctContext);
   const { authenticated } = useContext(authContext);
+  const { addProductCart, editProductCart } = useContext(cartContext);
   const { setDrawer } = useContext(appContext);
   const [selectedImage, setSelectImage] = useState<string>(
     product.images[0].url || ''
   );
-  const router = useRouter();
 
   const mutation = useMutation('add-product-to-cart', addPrductToCart, {
     onSuccess: ({ data, status }) => {
       if (status === 200) {
-        editCart(data);
+        if (data.status === 'new') {
+          addProductCart({ ...data, authenticated: true });
+        } else {
+          editProductCart({ ...data });
+        }
+
         setDrawer(true);
         setQuantity(1);
       }
@@ -40,7 +43,15 @@ const Header = ({ product }: { product: IProduct }) => {
 
   const addToCart = () => {
     if (!authenticated) {
-      fireAuthNotification(router);
+      addProductCart({
+        authenticated: false,
+        product,
+        quantity,
+        totalAmount: 0,
+      });
+
+      setDrawer(true);
+      setQuantity(1);
     } else {
       mutation.mutate({
         price: product.basePrice,
@@ -122,7 +133,10 @@ const Header = ({ product }: { product: IProduct }) => {
                 onChange={(e) => setQuantity(+e)}
               >
                 {range(1, product.stock - 1).map((integer) => (
-                  <Option value={integer}> {integer} </Option>
+                  <Option value={integer} key={integer}>
+                    {' '}
+                    {integer}{' '}
+                  </Option>
                 ))}
               </Select>
             </div>

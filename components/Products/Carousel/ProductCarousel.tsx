@@ -30,21 +30,21 @@ const ProductCarousel = ({
       <SwiperSlide>
         <div className={styles.CarouselSlide}>
           {products.slice(0, 4).map((product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product._id} />
           ))}
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className={styles.CarouselSlide}>
           {products.slice(4, 8).map((product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product._id} />
           ))}
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className={styles.CarouselSlide}>
           {products.slice(8, 12).map((product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product._id} />
           ))}
         </div>
       </SwiperSlide>

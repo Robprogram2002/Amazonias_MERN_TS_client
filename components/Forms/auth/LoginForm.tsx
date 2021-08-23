@@ -4,7 +4,7 @@ import Center from '../../Layout/Containers/Center';
 import styles from './LoginForm.module.scss';
 import TextField from './TextField';
 
-const loginSchema = Yup.object({
+export const loginSchema = Yup.object({
   email: Yup.string()
     .required('Email is a required field')
     .email('Enter a valid email address'),
@@ -13,7 +13,7 @@ const loginSchema = Yup.object({
     .min(8, 'password must be at least 8 characters long'),
 });
 
-const initialLoginValues = {
+export const initialLoginValues = {
   email: '',
   password: '',
 };

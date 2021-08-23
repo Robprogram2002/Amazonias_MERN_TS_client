@@ -19,21 +19,21 @@ const ProductPageCarousel = ({ products }: { products: IProduct[] }) => (
       <SwiperSlide>
         <div className={styles.CarouselPageSlide}>
           {products.slice(0, 4).map((product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product._id} />
           ))}
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className={styles.CarouselPageSlide}>
           {products.slice(4, 8).map((product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product._id} />
           ))}
         </div>
       </SwiperSlide>
       <SwiperSlide>
         <div className={styles.CarouselPageSlide}>
           {products.slice(8, 12).map((product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product._id} />
           ))}
         </div>
       </SwiperSlide>

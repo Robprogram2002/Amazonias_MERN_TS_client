@@ -12,8 +12,6 @@ export default function Home() {
     fetchHomeProducts
   );
 
-  console.log(data?.mostRatingProducts);
-
   return (
     <div style={{ width: '100%', backgroundColor: '#e4e4e4' }}>
       <HomeCarousel />

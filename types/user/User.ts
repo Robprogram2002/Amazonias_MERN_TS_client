@@ -1,13 +1,24 @@
-type ShippingAdressType = {
+import { IProduct } from 'types/Product';
+
+export type ShippingAddressPayload = {
+  fname: string;
+  lname: string;
+  email: string;
+  phone: string;
   country: string;
-  state: string;
   city: string;
   zip: string;
-  street: string;
+  address: string;
+  secondAddress: string;
+  description?: string;
 };
 
+export interface ShippingAddress extends ShippingAddressPayload {
+  _id: string;
+}
+
 export type ShopCart = {
-  products: { product: any; count: number }[];
+  products: { product: IProduct; count: number }[];
   totalAmount: number;
   coupon: {
     appliedCoupon: boolean;
@@ -22,7 +33,13 @@ export interface IUser {
   photoUrl: string;
   firstName: string;
   lastName: string;
-  shippingAddresses: ShippingAdressType;
+  shippingAddresses: ShippingAddress[];
   role: string;
   cart: ShopCart;
+  searchHistory: {
+    text: string;
+    createdAt: Date;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }

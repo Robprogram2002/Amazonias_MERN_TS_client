@@ -10,16 +10,18 @@ import StoreMenu from '@components/Navigation/menus/StoreMenu';
 import AuthProvider from '@context/AuthContext';
 import FilterProvider from '@context/FilterContext';
 import AppContextProvider from '@context/AppContext';
+import CartContextProvider from '@context/CartContext';
 
-import '../styles/globals.css';
 import 'nprogress/nprogress.css';
 import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
+import '../styles/globals.css';
 
 // Import Swiper styles
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
+import CheckOutContextProvider from '@context/CheckOutContext';
 
 // Binding events.
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -43,14 +45,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ToastContainer role="alert" />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <AuthProvider>
-          <AppContextProvider>
-            <FilterProvider>
-              {!isAuthRoute && !isAdminRoute && <StoreMenu />}
-              <Component {...pageProps} />
-            </FilterProvider>
-          </AppContextProvider>
-        </AuthProvider>
+        <CartContextProvider>
+          <AuthProvider>
+            <AppContextProvider>
+              <FilterProvider>
+                {!isAuthRoute && !isAdminRoute && <StoreMenu />}
+                <CheckOutContextProvider>
+                  <Component {...pageProps} />
+                </CheckOutContextProvider>
+              </FilterProvider>
+            </AppContextProvider>
+          </AuthProvider>
+        </CartContextProvider>
       </QueryClientProvider>
     </>
   );

@@ -72,41 +72,6 @@
   justify-content: space-around;
   align-items: center;
   width: 100%;
-
-  .CartContainer {
-    height: 100%;
-    color: $whiteGray;
-    display: flex;
-    align-items: flex-end;
-    padding: 5px 8px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    position: relative;
-
-    span {
-      margin: 0px 5px;
-      font-size: 1rem;
-      font-weight: bold;
-    }
-
-    .CartCount {
-      position: absolute;
-      background-color: $yellow;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 25px;
-      height: 25px;
-      border-radius: 25px;
-      color: black;
-      top: -0.2rem;
-      right: 2rem;
-    }
-
-    &:hover {
-      border: 1px solid $whiteGray;
-    }
-  }
 }
 
 .TextContent {

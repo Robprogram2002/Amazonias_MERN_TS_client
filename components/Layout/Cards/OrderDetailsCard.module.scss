@@ -1,0 +1,123 @@
+.Container {
+  width: 100%;
+  display: flex;
+  margin: 2rem 0rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.Card {
+  background-color: white;
+  padding: 1.4rem;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px $gray;
+}
+
+.Head {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 1.4rem;
+  width: 100%;
+
+  .HeadItem {
+    display: flex;
+
+    .IconContainer {
+      height: 100%;
+      margin-right: 0.6rem;
+
+      .Icon {
+        width: 40px;
+        height: 40px;
+        background-color: $darkBlue;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .ItemInfo {
+      span {
+        display: block;
+      }
+    }
+  }
+}
+
+.Content {
+  display: grid;
+  grid-template-columns: 68% 30%;
+  column-gap: 2rem;
+
+  .Cart {
+    table {
+      width: 100%;
+      border: 1px solid $gray;
+
+      tr {
+        border-top: 1px solid $gray;
+        border-bottom: 1px solid $gray;
+      }
+
+      .Summary {
+        span {
+          display: block;
+        }
+      }
+
+      .TableProduct {
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 35px;
+          height: 35px;
+          margin: 6px;
+        }
+      }
+
+      .TableData {
+        text-align: center;
+      }
+
+      .DataPrice {
+        text-align: end;
+      }
+    }
+  }
+}
+
+.CardElemt {
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 4px 8px;
+  border-bottom: 1px solid $gray;
+
+  &:hover {
+    border-bottom: 1px solid $darkBlue;
+  }
+}
+
+.SubmitButton {
+  width: 100%;
+  padding: 6px 14px;
+  border-radius: 4px;
+  background-color: $darkBlue;
+  color: white;
+  outline: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+
+  .Icon {
+    position: absolute;
+    right: 0.8rem;
+    width: 35px;
+    height: 25px;
+  }
+}

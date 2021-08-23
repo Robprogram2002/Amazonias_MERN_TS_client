@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { appContext } from '@context/AppContext';
 import { Drawer, Rate } from 'antd';
 import { IProduct } from 'types/Product';
-import { authContext } from '@context/AuthContext';
+import { cartContext } from '@context/CartContext';
 import { useRouter } from 'next/router';
 import styles from './CartDrawer.module.scss';
 
@@ -14,14 +14,13 @@ const CartDrawer = ({
   relatedProducts: IProduct[];
 }) => {
   const { state, setDrawer } = useContext(appContext);
-  const { user } = useContext(authContext);
+  const { cart } = useContext(cartContext);
   const router = useRouter();
 
-  const { cart } = user!;
-  const items = cart.products.reduce(
-    (count, element) => element.count + count,
-    0
-  );
+  const items =
+    cart.products.length > 0
+      ? cart.products.reduce((count, element) => element.count + count, 0)
+      : 0;
 
   return (
     <Drawer
@@ -37,7 +36,7 @@ const CartDrawer = ({
           <div className={styles.CartInfo}>
             <h4>
               Cart&apos;s subtotal ({items} items) :
-              <span> $ {cart.totalAmount} </span>
+              <span> $ {cart?.totalAmount || 0} </span>
             </h4>
             <span className={styles.SmallText}>
               Tu pedido es elegible con envíos GRATIS Selecciona envío GRATIS

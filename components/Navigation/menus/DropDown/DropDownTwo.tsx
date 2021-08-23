@@ -37,93 +37,91 @@ const DropDownTwo = ({ data }: { data: DepartmentsMenu[] | null }) => {
   };
 
   return (
-    <>
+    <div
+      className={styles.TextContent}
+      onClick={() => setIsOpen((prev) => !prev)}
+      onKeyDown={() => setIsOpen((prev) => !prev)}
+      role="menu"
+      tabIndex={0}
+    >
+      <span>All the </span>
+      <strong>
+        Departments <IoMdArrowDropdown />{' '}
+      </strong>
       <div
-        className={styles.TextContent}
-        onClick={() => setIsOpen((prev) => !prev)}
-        onKeyDown={() => setIsOpen((prev) => !prev)}
-        role="menu"
-        tabIndex={0}
+        className={styles.DropDownContainer}
+        style={{ display: isOpen ? 'flex' : 'none' }}
       >
-        <span>All the </span>
-        <strong>
-          Departments <IoMdArrowDropdown />{' '}
-        </strong>
-        <div
-          className={styles.DropDownContainer}
-          style={{ display: isOpen ? 'flex' : 'none' }}
-        >
-          <div className={styles.DepartmentList}>
-            {data &&
-              data.map((department) => (
+        <div className={styles.DepartmentList}>
+          {data &&
+            data.map((department) => (
+              <span
+                className={
+                  selectedDepartment?._id === department._id
+                    ? styles.DepartmentItemActive
+                    : styles.DepartmentItem
+                }
+                key={department._id}
+                onMouseEnter={() => {
+                  setSelectedDepartment(department);
+                  setSelectedCategory(null);
+                }}
+                onClick={() => setFilterDepartment(department)}
+                onKeyDown={() => setFilterDepartment(department)}
+                tabIndex={0}
+                role="menuitem"
+              >
+                {department.name}
+                <RiArrowRightSLine />
+              </span>
+            ))}
+        </div>
+        {selectedDepartment && (
+          <div className={styles.CategoryList}>
+            <h3> {selectedDepartment?.name} </h3>
+
+            {selectedDepartment &&
+              selectedDepartment.categories.map((category) => (
                 <span
-                  className={
-                    selectedDepartment?._id === department._id
-                      ? styles.DepartmentItemActive
-                      : styles.DepartmentItem
+                  className={styles.CategoryItem}
+                  key={category._id}
+                  onMouseEnter={() => setSelectedCategory(category)}
+                  onClick={() =>
+                    setFilterCategory(category, selectedDepartment)
                   }
-                  key={department._id}
-                  onMouseEnter={() => {
-                    setSelectedDepartment(department);
-                    setSelectedCategory(null);
-                  }}
-                  onClick={() => setFilterDepartment(department)}
-                  onKeyDown={() => setFilterDepartment(department)}
+                  onKeyDown={() =>
+                    setFilterCategory(category, selectedDepartment)
+                  }
                   tabIndex={0}
                   role="menuitem"
                 >
-                  {department.name}
+                  {category.name}
                   <RiArrowRightSLine />
                 </span>
               ))}
           </div>
-          {selectedDepartment && (
-            <div className={styles.CategoryList}>
-              <h3> {selectedDepartment?.name} </h3>
+        )}
 
-              {selectedDepartment &&
-                selectedDepartment.categories.map((category) => (
-                  <span
-                    className={styles.CategoryItem}
-                    key={category._id}
-                    onMouseEnter={() => setSelectedCategory(category)}
-                    onClick={() =>
-                      setFilterCategory(category, selectedDepartment)
-                    }
-                    onKeyDown={() =>
-                      setFilterCategory(category, selectedDepartment)
-                    }
-                    tabIndex={0}
-                    role="menuitem"
-                  >
-                    {category.name}
-                    <RiArrowRightSLine />
-                  </span>
-                ))}
-            </div>
-          )}
+        {selectedDepartment && (
+          <div className={styles.BigBanner}>
+            <img
+              src={selectedDepartment.banners[0].url}
+              alt="ajksndjs sajdjk"
+            />
+          </div>
+        )}
 
-          {selectedDepartment && (
-            <div className={styles.BigBanner}>
-              <img
-                src={selectedDepartment.banners[0].url}
-                alt="ajksndjs sajdjk"
-              />
-            </div>
-          )}
-
-          {selectedCategory && (
-            <div className={styles.BannersContainer}>
-              {selectedCategory.banners.map((banner) => (
-                <div className={styles.Banner} key={banner.publicId}>
-                  <img src={banner.url} alt="ajksndjs sajdjk" />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {selectedCategory && (
+          <div className={styles.BannersContainer}>
+            {selectedCategory.banners.map((banner) => (
+              <div className={styles.Banner} key={banner.publicId}>
+                <img src={banner.url} alt="ajksndjs sajdjk" />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

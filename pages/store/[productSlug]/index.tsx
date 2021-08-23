@@ -25,7 +25,7 @@ const ProductPage = () => {
     }
   );
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <Center>
         <LoadingOutlined />

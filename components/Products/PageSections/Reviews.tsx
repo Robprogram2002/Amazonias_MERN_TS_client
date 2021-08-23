@@ -91,7 +91,9 @@ const Reviews = ({
               className={styles.Stars}
             />
             <span className={styles.RateValue}>
-              {`${averageRate.toFixed(1)} out of 5 `}
+              {averageRate
+                ? `${averageRate.toFixed(1)} out of 5`
+                : 'No reviews'}
             </span>
           </div>
           <span className={styles.TotalCount}>

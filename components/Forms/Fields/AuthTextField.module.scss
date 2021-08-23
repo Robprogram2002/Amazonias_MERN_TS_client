@@ -1,0 +1,36 @@
+@import '../../../styles//constants.scss';
+
+.FieldContainer {
+  margin-bottom: 0.3rem;
+
+  input {
+    outline: none;
+    border: none;
+    width: 100%;
+    padding: 6px 8px;
+    border-bottom: 1px solid $gray;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-bottom: 1px solid $grayBlue;
+    }
+  }
+
+  input::placeholder {
+    color: $darkGray;
+    font-size: 1rem;
+    font-weight: 480;
+  }
+}
+
+.FieldContainer.Error {
+  input {
+    border-bottom: 2px solid $errorMessege;
+  }
+}
+
+.Message {
+  color: $errorMessege;
+  font-style: italic;
+}
